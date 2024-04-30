@@ -25,6 +25,9 @@ jobs:
 
       - name: Build React App
         run: npm run build
+        env:
+          REACT_APP_LOGINURI: ${{ secrets.REACT_APP_LOGINURI }}
+          REACT_APP_LOGOUTURI: ${{ secrets.REACT_APP_LOGOUTURI }}
 
       - name: Deploy to AWS S3
         env:
