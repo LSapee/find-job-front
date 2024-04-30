@@ -32,4 +32,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_S3_BUCKET : ${{secrets.AWS_S3_BUCKET}}
           AWS_DISTRIBUTION_ID : ${{secrets.AWS_DISTRIBUTION_ID}}
+          AWS_DEFAULT_REGION: ${{secrets.AWS_DEFAULT_REGION}}
         run: sh deploy/deploy.sh  # 배포 스크립트 실행
