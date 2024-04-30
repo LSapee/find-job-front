@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # S3 버킷 이름과 CloudFront 배포 ID를 설정합니다.
-S3_BUCKET=find-job-front
+S3_BUCKET=${{ secrets.AWS_S3_BUCKET }}
 DISTRIBUTION_ID=${{ secrets.AWS_DISTRIBUTION_ID }}
 
 # 빌드된 파일을 S3 버킷으로 업로드합니다.
