@@ -66,7 +66,7 @@ const Home:React.FC = () => {
             setPageGroup(1);
         }
         try {
-            const response = await fetch(`https://findjob.lsapee.com/getjob?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`);
+            const response = await fetch(`https://findjob.lsapee.com/api/getjob?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`);
             const myData: MyList[] = await response.json();
             if (Array.isArray(myData)) {  // 서버로부터 받은 데이터가 배열인지 확인
                 setJobs(myData);
@@ -88,8 +88,7 @@ const Home:React.FC = () => {
     // 페이지네이션 버튼 생성
     const renderPageNumbers = () => {
         const startPage = (pageGroup - 1) * pagesPerGroup + 1;
-        const endPage = startPage + pagesPerGroup - 1;
-
+        // const endPage = startPage + pagesPerGroup - 1;
         return (
             <>
                 {startPage > 1 && (

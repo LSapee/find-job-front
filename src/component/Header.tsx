@@ -1,7 +1,6 @@
 import React from 'react';
 import Nav from './Nav'; // Nav 컴포넌트 import
 import { UserProps } from '../types';
-import Cookies from "js-cookie";
 
 const Header: React.FC<UserProps> = ({ isLoggedIn }) => {
     return (
