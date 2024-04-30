@@ -96,12 +96,12 @@ const Home:React.FC = () => {
                         setPageGroup(pageGroup - 1);
                         setCurrentPage((pageGroup - 2) * pagesPerGroup + 1);
                         getJob(((pageGroup - 2) * pagesPerGroup) * itemsPerPage); // 이전 그룹의 첫 페이지 데이터를 불러옵니다.
-                    }}>{"<"}</button>
+                    }} style={pageBoxStyle}>{"<"}</button>
                 )}
                 {Array.from({ length: pagesPerGroup }, (_, i) => startPage + i).map(page =>
                     <button key={page} disabled={currentPage === page} onClick={() => {
                         setCurrentPage(page);
-                    }}>
+                    }} style={pageBoxStyle}>
                         {page}
                     </button>
                 )}
@@ -111,7 +111,7 @@ const Home:React.FC = () => {
                     const newStartPage = (newPageGroup - 1) * pagesPerGroup + 1;
                     setCurrentPage(newStartPage); // 다음 그룹의 첫 페이지로 설정
                     getJob((newStartPage - 1) * itemsPerPage); // 다음 그룹의 첫 페이지 데이터를 불러옵니다.
-                }}>{">"}</button>
+                }}  style={pageBoxStyle}>{">"}</button>
             </>
         );
     };
@@ -172,40 +172,50 @@ const Home:React.FC = () => {
                         </div>
                     </div>
                     <div style={{marginTop: 10}}>
-                        <ul id="st" style={{padding:0}}>
+                        <div id="st" style={{padding: 0}} className="row justify-content-center gx-5">
                             {currentData().map((job, index) => (
-                                <li key={index} style={listStyle}>
-                                    <a href={job.postURL} target="_blank" rel="noopener noreferrer">
-                                        <h2>{job.company}</h2>
-                                        <h3>{job.postTitle}</h3>
-                                        <span>경력: {Array.isArray(job.exp) ? job.exp.join(', ') : job.exp}</span><br />
-                                        <span>학력: {job.edu}</span><br />
-                                        <span>지역: {job.loc}</span><br />
-                                        <span>기술 스택: {job.skillStacks}</span><br />
-                                        <span>마감일: {job.endDate}</span>
-                                    </a>
-                                </li>
+                                <div key={index} className="col-6 mb-4 mr-3"style={{marginTop:"20px" ,padding:"10px"}}>
+                                    <div className="card">
+                                    <div className="card-header">
+                                        {job.postTitle}
+                                    </div>
+                                    <div className="card-body">
+                                        <h5 className="card-title">{job.company}</h5>
+                                        <p className="card-text">
+                                            <span>경력 : {Array.isArray(job.exp) ? job.exp.join(', ') : job.exp}</span><br/>
+                                            <span>학력 : {job.edu}</span><br/>
+                                            <span>지역 : {job.loc}</span><br/>
+                                            <span style={{display: "block", overflow: "hidden", whiteSpace: "nowrap",textOverflow: "ellipsis" }}>기술 스택 : {job.skillStacks}</span><br/>
+                                            <span>마감일 :{job.endDate}</span>
+                                        </p>
+                                        <a href={job.postURL} className="btn btn-primary" target="_blank" rel="noopener noreferrer">페이지로 이동</a>
+                                        &nbsp;&nbsp;
+                                        {/* 지원 완료 버튼 클릭시 마이페이지에서 지원 완료한 목록*/}
+                                        <button className="btn btn-primary" style={{marginRight:"20px;"}} disabled={true}>지원 완료</button>
+                                    </div>
+                                </div>
+                                </div>
                             ))}
-                        </ul>
+                        </div>
+
+
                         <div className="row" style={{marginTop: 20}}>
-                            <div className="col-1" ></div>
+                            <div className="col-1"></div>
                             <div className="col-10" id="pageList"
-                                 style={{position: "relative"}}>
+                                 style={{position: "relative",textAlign: "center"}}>
                                 <div>
                                     {renderPageNumbers()}
+                                </div>
+                                <div className="col-1"></div>
                             </div>
-                            <div className="col-1"></div>
-                        </div>
-                        <div className="row" style={{marginTop: 50}}>
+                            <div className="row" style={{marginTop: 50}}>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="col-2">
-                    <div id="sideBox">
+                    <div className="col-2">
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     );
 }
@@ -215,9 +225,11 @@ const searchTitleStyle = {
     height: "50px",
     marginBottom: "10px"
 }
-const listStyle ={
-    listStyle:"none",
-    border: '1px solid black'
+const pageBoxStyle ={
+    border : "0px",
+    marginLeft: "20px",
+    backgroundColor: "white",
 }
+
 
 export default Home;
