@@ -99,9 +99,6 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             setInitialLoad(false);
         }
     }, [pageGroup, getJob]);
-
-    // 초기 로드 시에만 initialLoad를 false로 설정
-    if (initialLoad) setInitialLoad(false);
     // 페이지네이션 버튼 생성
     const renderPageNumbers = () => {
         const startPage = (pageGroup - 1) * pagesPerGroup + 1;
