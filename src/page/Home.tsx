@@ -98,7 +98,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             // 초기 실행시
             setInitialLoad(false);
         }
-    }, [pageGroup,getJob]);
+    }, [pageGroup,getJob,initialLoad]);
     // 페이지네이션 버튼 생성
     const renderPageNumbers = () => {
         const startPage = (pageGroup - 1) * pagesPerGroup + 1;
