@@ -94,8 +94,11 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
         if (!initialLoad) {
             const firstPageOfGroup = (pageGroup - 1) * pagesPerGroup * itemsPerPage;
             getJob(firstPageOfGroup);
+        } else {
+            // 초기 실행시
+            setInitialLoad(false);
         }
-    }, [pageGroup, getJob, initialLoad]);
+    }, [pageGroup, getJob]);
 
     // 초기 로드 시에만 initialLoad를 false로 설정
     if (initialLoad) setInitialLoad(false);
