@@ -94,11 +94,11 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
         if (!initialLoad) {
             const firstPageOfGroup = (pageGroup - 1) * pagesPerGroup * itemsPerPage;
             getJob(firstPageOfGroup);
-        } else {
-            // 초기 실행시
-            setInitialLoad(false);
         }
-    }, [pageGroup,getJob,initialLoad]);
+    }, [pageGroup, getJob, initialLoad]);
+
+    // 초기 로드 시에만 initialLoad를 false로 설정
+    if (initialLoad) setInitialLoad(false);
     // 페이지네이션 버튼 생성
     const renderPageNumbers = () => {
         const startPage = (pageGroup - 1) * pagesPerGroup + 1;
