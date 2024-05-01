@@ -70,7 +70,12 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             setPageGroup(1);
         }
         try {
-            const response = await fetch(`https://findjobapi.lsapee.com/api/getjob?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`);
+            const response = await fetch(`https://findjobapi.lsapee.com/api/getjob?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
+                {method: 'Get',
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: 'include',
+                }
+                );
             const myData: MyList[] = await response.json();
             if (Array.isArray(myData)) {  // 서버로부터 받은 데이터가 배열인지 확인
                 setJobs(myData);
