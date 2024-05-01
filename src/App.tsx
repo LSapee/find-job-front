@@ -14,7 +14,7 @@ function App() {
     return (
         <div className="App">
             <Header isLoggedIn={isLoggedIn} />
-            <Main/>
+            <Main isLoggedIn={isLoggedIn}/>
         </div>
     );
 }

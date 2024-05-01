@@ -13,7 +13,6 @@ const Nav: React.FC<UserProps> = ({ isLoggedIn }) => {
     };
     const logoutPage = ()=>{
         if(logoutUrl!==undefined) window.location.href =logoutUrl;
-
     }
     return (
         <div className="btn-group">

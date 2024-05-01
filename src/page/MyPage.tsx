@@ -1,8 +1,17 @@
-const MyPage =() =>{
+import React, {useEffect} from "react";
+import {UserProps} from "../types";
 
+const MyPage:React.FC<UserProps> =({isLoggedIn}) =>{
+    useEffect(() => {
+        // 쿠키에 "a" 정보가 없으면 리다이렉션
+        if (!isLoggedIn) {
+            const redirectUrl = process.env.REACT_APP_LOGINURI;
+            if(typeof redirectUrl === "string") window.location.href = redirectUrl;
+        }
+    }, [isLoggedIn]);
     return (
         <div className="MyPage">
-            <h1 style={{position:"absolute" ,width:"100%",height:"100%",textAlign:"center",paddingTop:"20%",fontSize:"72px"}}> 준비 중 </h1>
+            <h1>나의 지원 내역</h1>
         </div>
     )
 }
