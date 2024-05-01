@@ -18,6 +18,8 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
     const [jobs, setJobs] = useState<MyList[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageGroup, setPageGroup] = useState(1);
+    const [initialLoad, setInitialLoad] = useState(true);
+
 
     const itemsPerPage = 10;
     const pagesPerGroup = 10;
@@ -27,6 +29,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
 
     const inputGet = () => {
         const inputMapping = [];
+
         const titleElement = document.getElementById("searchTitle") as HTMLInputElement;
         const myExpElement = document.getElementById("exp") as HTMLInputElement;
         const expAllElement = document.getElementById("expAll") as HTMLInputElement;
@@ -83,8 +86,13 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
 
     // 페이지 그룹이 변경될 때 새로운 데이터 불러오기
     useEffect(() => {
-        const firstPageOfGroup = (pageGroup - 1) * pagesPerGroup * itemsPerPage;
-        getJob(firstPageOfGroup);
+        if (!initialLoad) {
+            const firstPageOfGroup = (pageGroup - 1) * pagesPerGroup * itemsPerPage;
+            getJob(firstPageOfGroup);
+        } else {
+            // 초기 실행시
+            setInitialLoad(false);
+        }
     }, [pageGroup,getJob]);
     // 페이지네이션 버튼 생성
     const renderPageNumbers = () => {
@@ -199,9 +207,9 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                                             &nbsp;&nbsp;
                                             {/* 지원 완료 버튼 클릭시 마이페이지에서 지원 완료한 목록*/}
                                             {isLoggedIn ?
-                                                <button className="btn btn-primary" style={{marginRight: "20px;"}}
+                                                <button className="btn btn-primary"style={btnStyle}
                                                         disabled={true}>지원 완료</button> :
-                                                <button className="btn btn-primary" style={{marginRight: "20px;"}}
+                                                <button className="btn btn-primary" style={btnStyle}
                                                         disabled={false}>지원 완료</button>}
 
                                         </div>
@@ -241,6 +249,9 @@ const pageBoxStyle ={
     border : "0px",
     marginLeft: "20px",
     backgroundColor: "white",
+}
+const btnStyle ={
+    marginLeft: "15px"
 }
 
 
