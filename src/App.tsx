@@ -7,7 +7,7 @@ import Main from "./page/Main";
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     useEffect(() => {
-        const token = Cookies.get('loginToken');
+        const token = Cookies.get('access');
         setIsLoggedIn(!!token);  // token이 있으면 true, 없으면 false
     }, []);
 
