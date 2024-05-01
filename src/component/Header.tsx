@@ -44,10 +44,6 @@ const titleTextStyle = {
     fontSize: '40px',
     fontWeight: 'bold',
 };
-const userContainerStyle = {
-    fontSize: '20px',
-    paddingRight: "20px"
-}
 
 const navContainerStyle = {
     paddingRight: '50px', // Nav 컴포넌트를 좌측으로 이동시킬 여백 추가
