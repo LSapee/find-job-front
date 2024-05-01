@@ -8,8 +8,8 @@ const Main:React.FC<UserProps> = ({isLoggedIn}) => {
     return (
         <div className="Main">
             <Routes >
-                <Route path="/" element={<Home/>} />
-                <Route path="/Home" element={<Home/>} />
+                <Route path="/" element={<Home isLoggedIn={isLoggedIn}/>} />
+                <Route path="/Home" element={<Home isLoggedIn={isLoggedIn}/> } />
                 <Route path="/MyPage" element={<MyPage isLoggedIn={isLoggedIn}/>}/>
                 {/* 여기에 추가적인 라우트를 설정할 수 있습니다. */}
             </Routes>

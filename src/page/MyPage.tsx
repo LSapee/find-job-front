@@ -10,9 +10,20 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) =>{
         }
     }, [isLoggedIn]);
     return (
-        <div className="MyPage">
-            <h1>나의 지원 내역</h1>
+        <div className="MyPage" style={myPageStyle}>
+            <h1 style={hStyle}>
+                나의 지원 내역
+            </h1>
         </div>
     )
 }
+
+const myPageStyle:React.CSSProperties = {
+    marginTop: "20px",
+
+}
+const hStyle:React.CSSProperties = {
+    textAlign: "center"
+}
+
 export default MyPage;

@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
+import {UserProps} from "../types";
 
 type MyList = {
     company: string;
@@ -11,7 +12,7 @@ type MyList = {
     postURL: string
 };
 
-const Home:React.FC = () => {
+const Home:React.FC<UserProps>= (isLoggedIn) => {
     //키워드 가져와서 보관
     const [keywordLists, setKeywordLists] = useState<string[]>([]);
     const [jobs, setJobs] = useState<MyList[]>([]);
@@ -179,21 +180,32 @@ const Home:React.FC = () => {
                                     <div className="card-header">
                                         {job.postTitle}
                                     </div>
-                                    <div className="card-body">
-                                        <h5 className="card-title">{job.company}</h5>
-                                        <p className="card-text">
-                                            <span>경력 : {Array.isArray(job.exp) ? job.exp.join(', ') : job.exp}</span><br/>
-                                            <span>학력 : {job.edu}</span><br/>
-                                            <span>지역 : {job.loc}</span><br/>
-                                            <span style={{display: "block", overflow: "hidden", whiteSpace: "nowrap",textOverflow: "ellipsis" }}>기술 스택 : {job.skillStacks}</span><br/>
-                                            <span>마감일 :{job.endDate}</span>
-                                        </p>
-                                        <a href={job.postURL} className="btn btn-primary" target="_blank" rel="noopener noreferrer">페이지로 이동</a>
-                                        &nbsp;&nbsp;
-                                        {/* 지원 완료 버튼 클릭시 마이페이지에서 지원 완료한 목록*/}
-                                        <button className="btn btn-primary" style={{marginRight:"20px;"}} disabled={true}>지원 완료</button>
+                                        <div className="card-body">
+                                            <h5 className="card-title">{job.company}</h5>
+                                            <p className="card-text">
+                                                <span>경력 : {Array.isArray(job.exp) ? job.exp.join(', ') : job.exp}</span><br/>
+                                                <span>학력 : {job.edu}</span><br/>
+                                                <span>지역 : {job.loc}</span><br/>
+                                                <span style={{
+                                                    display: "block",
+                                                    overflow: "hidden",
+                                                    whiteSpace: "nowrap",
+                                                    textOverflow: "ellipsis"
+                                                }}>기술 스택 : {job.skillStacks}</span><br/>
+                                                <span>마감일 :{job.endDate}</span>
+                                            </p>
+                                            <a href={job.postURL} className="btn btn-primary" target="_blank"
+                                               rel="noopener noreferrer">페이지로 이동</a>
+                                            &nbsp;&nbsp;
+                                            {/* 지원 완료 버튼 클릭시 마이페이지에서 지원 완료한 목록*/}
+                                            {isLoggedIn ?
+                                                <button className="btn btn-primary" style={{marginRight: "20px;"}}
+                                                        disabled={true}>지원 완료</button> :
+                                                <button className="btn btn-primary" style={{marginRight: "20px;"}}
+                                                        disabled={false}>지원 완료</button>}
+
+                                        </div>
                                     </div>
-                                </div>
                                 </div>
                             ))}
                         </div>

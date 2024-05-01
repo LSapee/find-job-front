@@ -6,13 +6,12 @@ import Main from "./page/Main";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     useEffect(() => {
         const token = Cookies.get('access');
-        console.log(token);
         setIsLoggedIn(!!token);
     }, []);
     useEffect(() => {
-        console.log("isLoggedIn", isLoggedIn);
     }, [isLoggedIn]); // isLoggedIn이 변경될 때마다 실행
 
 

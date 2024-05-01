@@ -10,11 +10,6 @@ const Header: React.FC<UserProps> = ({ isLoggedIn }) => {
                 <div style={titleContainerStyle}>
                     <h1 style={titleTextStyle}>사람인/잡코리아 링크 가져오기</h1>
                 </div>
-                {isLoggedIn ? (
-                    <div style={userContainerStyle}>${}님</div>
-                ) : (
-                    null
-                )}
                 <div style={navContainerStyle}>
                     <Nav isLoggedIn={isLoggedIn} />
                 </div>
