@@ -8,10 +8,13 @@ function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     useEffect(() => {
         const token = Cookies.get('access');
-        console.log(token)
-        setIsLoggedIn(!!token);  // token이 있으면 true, 없으면 false
-        console.log("isLoggedIn",isLoggedIn)
-    }, [isLoggedIn]);
+        console.log(token);
+        setIsLoggedIn(!!token);
+    }, []);
+    useEffect(() => {
+        console.log("isLoggedIn", isLoggedIn);
+    }, [isLoggedIn]); // isLoggedIn이 변경될 때마다 실행
+
 
     return (
         <div className="App">
