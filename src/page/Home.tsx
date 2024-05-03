@@ -213,8 +213,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                                             &nbsp;&nbsp;
                                             {/* 지원 완료 버튼 클릭시 마이페이지에서 지원 완료한 목록*/}
                                             {isLoggedIn ?
-                                                <button className="btn btn-primary"style={btnStyle}
-                                                        disabled={true}>지원 완료</button> :
+                                                null :
                                                 <button className="btn btn-primary" style={btnStyle}
                                                         disabled={false}>지원 완료</button>}
 
