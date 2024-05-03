@@ -51,8 +51,8 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
     };
     const keywordGet = async () => {
         try {
-            // const response = await fetch("https://findjobapi.lsapee.com/api/getKeywords");
-            const response = await fetch("http://localhost:3001/api/getKeywords");
+            const response = await fetch("https://findjobapi.lsapee.com/api/getKeywords");
+            // const response = await fetch("http://localhost:3001/api/getKeywords");
             const data = await response.json();
             if (data === false) return;
             setKeywordLists(data);
@@ -68,8 +68,8 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             setPageGroup(1);
         }
         try {
-            // const response = await fetch(`https://findjobapi.lsapee.com/api/getjob?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
-            const response = await fetch(`http://localhost:3001/api/getjob?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
+            const response = await fetch(`https://findjobapi.lsapee.com/api/getjob?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
+            // const response = await fetch(`http://localhost:3001/api/getjob?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
                 {method: 'Get',
                     headers: {'Content-Type': 'application/json'},
                     credentials: 'include',
@@ -206,11 +206,16 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                                                 }}>기술 스택 : {job.skillStacks}</span><br/>
                                                 <span>마감일 :{job.endDate}</span>
                                             </p>
-                                            <a href={job.postURL} className="btn btn-primary" target="_blank"
+                                            <a href={job.postURL} className="btn btn-info" target="_blank"
                                                rel="noopener noreferrer">페이지로 이동</a>
-                                            &nbsp;&nbsp;
+                                            &nbsp;
                                             {/* 지원 완료 버튼 클릭시 마이페이지에서 지원 완료한 목록*/}
-                                            {isLoggedIn.isLoggedIn ? <button className="btn btn-primary" style={btnStyle} >지원 완료</button> :null}
+                                            {isLoggedIn.isLoggedIn ?
+                                                <>
+                                                    <button className="btn btn-primary" style={btnStyle}>지원 완료</button>
+                                                <button className="btn btn-danger"  style={btnStyle}>해당 업체 공고 보지않기</button>
+                                                </>
+                                                : null}
                                         </div>
                                     </div>
                                 </div>
