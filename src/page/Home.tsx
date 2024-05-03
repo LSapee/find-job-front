@@ -13,6 +13,7 @@ type MyList = {
 };
 
 const Home:React.FC<UserProps>= (isLoggedIn) => {
+    console.log("isLoggedIn",isLoggedIn)
     //키워드 가져와서 보관
     const [keywordLists, setKeywordLists] = useState<string[]>([]);
     const [jobs, setJobs] = useState<MyList[]>([]);
