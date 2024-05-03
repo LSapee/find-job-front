@@ -9,7 +9,6 @@ function App() {
 
     useEffect(() => {
         const token = Cookies.get('access');
-        console.log("token",token);
         setIsLoggedIn(!!token);
     }, []);
     useEffect(() => {

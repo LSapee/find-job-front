@@ -13,7 +13,6 @@ type MyList = {
 };
 
 const Home:React.FC<UserProps>= (isLoggedIn) => {
-    console.log("isLoggedIn",isLoggedIn)
     //키워드 가져와서 보관
     const [keywordLists, setKeywordLists] = useState<string[]>([]);
     const [jobs, setJobs] = useState<MyList[]>([]);
@@ -52,12 +51,10 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
     };
     const keywordGet = async () => {
         try {
-            const response = await fetch("https://findjobapi.lsapee.com/api/getKeywords");
+            // const response = await fetch("https://findjobapi.lsapee.com/api/getKeywords");
+            const response = await fetch("http://localhost:3001/api/getKeywords");
             const data = await response.json();
-            if (data === false) {
-                console.log("키워드가 존재하지 않습니다.");
-                return;
-            }
+            if (data === false) return;
             setKeywordLists(data);
         } catch (error) {
             console.error("키워드를 가져오는 중 오류가 발생했습니다:", error);
@@ -71,7 +68,8 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             setPageGroup(1);
         }
         try {
-            const response = await fetch(`https://findjobapi.lsapee.com/api/getjob?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
+            // const response = await fetch(`https://findjobapi.lsapee.com/api/getjob?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
+            const response = await fetch(`http://localhost:3001/api/getjob?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
                 {method: 'Get',
                     headers: {'Content-Type': 'application/json'},
                     credentials: 'include',
@@ -212,8 +210,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                                                rel="noopener noreferrer">페이지로 이동</a>
                                             &nbsp;&nbsp;
                                             {/* 지원 완료 버튼 클릭시 마이페이지에서 지원 완료한 목록*/}
-                                            {isLoggedIn ? <button className="btn btn-primary" style={btnStyle} >지원 완료</button> :null}
-
+                                            {isLoggedIn.isLoggedIn ? <button className="btn btn-primary" style={btnStyle} >지원 완료</button> :null}
                                         </div>
                                     </div>
                                 </div>
