@@ -10,7 +10,9 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
     // 버튼 클릭 시 실행되는 함수
     useEffect(() => {
         // 다시는 보지 않을 공고 정보
-        fetch('https://findjobapi.lsapee.com/api/companys')
+        fetch('https://findjobapi.lsapee.com/api/companys',{
+            method: 'GET',
+        })
             .then(response => response.json())
             .then(data => setIgnoredJobs(data))
             .catch(error => console.error('Error fetching:', error));
