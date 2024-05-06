@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {UserProps} from "../types";
 
 const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
@@ -10,18 +10,23 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
     // 버튼 클릭 시 실행되는 함수
     useEffect(() => {
         // 다시는 보지 않을 공고 정보
-        fetch('https://findjobapi.lsapee.com/api/companys',{
-            method: 'GET',
-        })
-            .then(response => response.json())
-            .then(data => setIgnoredJobs(data))
-            .catch(error => console.error('Error fetching:', error));
+        getIgnoreCompanies();
 
     }, []);
     const handleButtonClick = (button:string) => {
         setSelectedButton(button); // 클릭한 버튼을 상태에 저장
     };
     console.log(setIgnoredJobs)
+
+    const getIgnoreCompanies = async ()=>{
+        await fetch('https://findjobapi.lsapee.com/api/companys',{
+            method: 'GET',
+        })
+            .then(response => response.json())
+            .then(data => setIgnoredJobs(data))
+            .catch(error => console.error('Error fetching:', error));
+
+    }
 
     // 선택된 버튼에 따라 해당 내용을 반환하는 함수
     const getContent = () => {
