@@ -23,8 +23,14 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include',
+            redirect: 'manual'
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.type === 'opaqueredirect') {
+                    return window.location.href = 'https://ab.a.com'; // 클라이언트 측에서 리다이렉션 처리
+                }
+                return response.json()
+            })
             .then(data => setIgnoredJobs(data))
             .catch(error => console.error('Error fetching:', error));
 
