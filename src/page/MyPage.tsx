@@ -27,7 +27,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         })
             .then(response => {
                 if (response.type === 'opaqueredirect') {
-                    return window.location.href = 'https://ab.a.com'; // 클라이언트 측에서 리다이렉션 처리
+                    return window.location.href = 'https://findjob.lsapee.com';
                 }
                 return response.json()
             })
