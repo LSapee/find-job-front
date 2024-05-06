@@ -3,10 +3,23 @@ import {UserProps} from "../types";
 
 const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
     const [selectedButton, setSelectedButton] = useState("button1");
+    // 지원한 회사 정보를 저장할 배열
+    const [appliedCompanies, setAppliedCompanies] = useState([]);
+    // 다시는 보지 않을 공고 정보를 저장할 배열
+    const [ignoredJobs, setIgnoredJobs] = useState([]);
     // 버튼 클릭 시 실행되는 함수
+    useEffect(() => {
+        // 다시는 보지 않을 공고 정보
+        fetch('https://findjobapi.lsapee.com/api/companys')
+            .then(response => response.json())
+            .then(data => setIgnoredJobs(data))
+            .catch(error => console.error('Error fetching:', error));
+
+    }, []);
     const handleButtonClick = (button:string) => {
         setSelectedButton(button); // 클릭한 버튼을 상태에 저장
     };
+    console.log(setIgnoredJobs)
 
     // 선택된 버튼에 따라 해당 내용을 반환하는 함수
     const getContent = () => {
@@ -14,7 +27,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             case "button1":
                 return (
                     <div>
-                        <h2>버튼 1의 내용</h2>
+                        <h2 style={{textAlign:"center"}}>내가 지원한 회사 목록</h2>
                         <table className="table">
                             <thead>
                             <tr>
@@ -50,7 +63,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             case "button2":
                 return (
                     <div>
-                        <h2>버튼 2의 내용</h2>
+                        <h2 style={{textAlign: "center"}}>제외한 회사 목록</h2>
                         <table className="table">
                             <thead>
                             <tr>
