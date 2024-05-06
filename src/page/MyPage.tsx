@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {UserProps} from "../types";
 
 const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
@@ -21,6 +21,8 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
     const getIgnoreCompanies = async ()=>{
         await fetch('https://findjobapi.lsapee.com/api/companys',{
             method: 'GET',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
         })
             .then(response => response.json())
             .then(data => setIgnoredJobs(data))
