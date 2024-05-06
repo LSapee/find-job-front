@@ -165,9 +165,12 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                 alert("처리 실패")
                 console.error('There was a problem with your fetch operation:', error);
             });
-        const updatedJobs = jobs.filter(job => job.company !== companyName);
-        // 새로운 배열로 jobs 상태 업데이트
-        setJobs(updatedJobs);
+        if(tt){
+            const updatedJobs = jobs.filter(job => job.company !== companyName);
+            // 새로운 배열로 jobs 상태 업데이트
+            setJobs(updatedJobs);
+        }
+
     }
 
     return (

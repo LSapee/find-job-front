@@ -40,7 +40,41 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             .catch(error => console.error('Error fetching:', error));
 
     }
+    const companyDelCen = async (companyName:string) =>{
+        const delData = {
+            companyName: companyName
+        }
+        let tt:boolean=false
+        fetch(`https://findjobapi.lsapee.com/api/companys `,
+            // await fetch(`http://localhost:3001/api/companys `,
+            {method: 'DELETE',
+                headers: {'Content-Type': 'application/json'},
+                credentials: 'include',
+                body: JSON.stringify(delData),
+            }
+        ).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // JSON 형태로 응답 받기
+        })
+            .then(data => {
+                // 서버로부터 받은 데이터 처리
+                alert("처리 성공")
+                tt=true;
+                console.log('서버 응답 데이터:', data);
+            })
+            .catch(error => {
+                // 오류 처리
+                alert("처리 실패")
+                console.error('There was a problem with your fetch operation:', error);
+            });
+        if(tt){
+            const updatedJobs = ignoredJobs.filter(job => job.companyName !== companyName);
+            setIgnoredJobs(updatedJobs);
+        }
 
+    }
 
 
     // 선택된 버튼에 따라 해당 내용을 반환하는 함수
@@ -102,7 +136,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                     <td>{job.companyName}</td>
                                     <td>{job.Date.substring(0,10)}</td>
                                     <td>
-                                        <button className="btn btn-danger">
+                                        <button className="btn btn-danger"onClick={(e)=>{companyDelCen(job.companyName) }}>
                                             제외 취소
                                         </button>
                                     </td>
