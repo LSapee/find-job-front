@@ -1,12 +1,17 @@
 import React, {useEffect, useState} from "react";
 import {UserProps} from "../types";
 
+interface ignoredJob {
+    companyName: string;
+    Date: string;
+}
+
 const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
     const [selectedButton, setSelectedButton] = useState("button1");
     // 지원한 회사 정보를 저장할 배열
     const [appliedCompanies, setAppliedCompanies] = useState([]);
     // 다시는 보지 않을 공고 정보를 저장할 배열
-    const [ignoredJobs, setIgnoredJobs] = useState([]);
+    const [ignoredJobs, setIgnoredJobs] = useState<ignoredJob[]>([]);
     // 버튼 클릭 시 실행되는 함수
     useEffect(() => {
         // 다시는 보지 않을 공고 정보
@@ -16,8 +21,6 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
     const handleButtonClick = (button:string) => {
         setSelectedButton(button); // 클릭한 버튼을 상태에 저장
     };
-    console.log(setIgnoredJobs)
-
     const getIgnoreCompanies = async ()=>{
         await fetch('https://findjobapi.lsapee.com/api/companys',{
             method: 'GET',
@@ -32,12 +35,13 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 return response.json()
             })
             .then(data => {
-                console.log("data",data)
                 setIgnoredJobs(data)
             })
             .catch(error => console.error('Error fetching:', error));
 
     }
+
+
 
     // 선택된 버튼에 따라 해당 내용을 반환하는 함수
     const getContent = () => {
@@ -92,24 +96,18 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>임시</td>
-                                <td>임시</td>
-                                <td><button className="btn btn-danger" >제외 취소</button></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry the Bird</td>
-                                <td>@twitter</td>
-                                <td>@twitter</td>
-                            </tr>
+                                {ignoredJobs.map((job, index) => (
+                                <tr key={job.companyName}>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>{job.companyName}</td>
+                                    <td>{job.Date}</td>
+                                    <td>
+                                        <button className="btn btn-danger">
+                                            제외 취소
+                                        </button>
+                                    </td>
+                                </tr>
+                                ))}
                             </tbody>
                         </table>
                     </div>
