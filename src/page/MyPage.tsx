@@ -31,7 +31,10 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 }
                 return response.json()
             })
-            .then(data => setIgnoredJobs(data))
+            .then(data => {
+                console.log("data",data)
+                setIgnoredJobs(data)
+            })
             .catch(error => console.error('Error fetching:', error));
 
     }
