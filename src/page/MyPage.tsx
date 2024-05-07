@@ -156,6 +156,14 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         }));
     }
     const writeCompletedCompany = async ()=>{
+        if(inputDatas.comN===""){
+            alert("회사명을 입력해주세요!");
+            return ;
+        }
+        if(inputDatas.postT===""){
+            alert("공고명을 입력해주세요!");
+            return ;
+        }
         await fetch("https://findjobapi.lsapee.com/api/appCom",{
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -172,6 +180,11 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 if(data.success!==undefined) alert(data.success)
                 else{
                     setAppliedCompanies(prevCompanies => [...prevCompanies, data])
+                    setInputDatas({
+                        comN:"",
+                        postT:"",
+                        subS:"",
+                    })
                 }
             })
             .catch(error => {
