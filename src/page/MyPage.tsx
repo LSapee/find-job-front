@@ -48,7 +48,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             .catch(error => console.error('Error fetching:', error));
     }
     const getCompletedCompanyList =async ()=>{
-        await fetch('https://findjobapi.lsapee.com/api/companys',{
+        await fetch('https://findjobapi.lsapee.com/api/companyT',{
             method: 'GET',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include',
