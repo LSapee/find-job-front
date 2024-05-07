@@ -61,6 +61,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 return response.json()
             })
             .then(data => {
+                console.log("data",data);
                 setAppliedCompanies(data)
             })
             .catch(error => console.error('Error fetching:', error));
