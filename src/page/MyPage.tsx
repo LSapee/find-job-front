@@ -37,6 +37,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         })
             .then(response => {
                 if (response.type === 'opaqueredirect') {
+                    alert("zzz");
                     return window.location.href = 'https://findjob.lsapee.com';
                 }
                 return response.json()
@@ -44,7 +45,10 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             .then(data => {
                 setIgnoredJobs(data)
             })
-            .catch(error => console.error('Error fetching:', error));
+            .catch(error => {
+                    alert(error);
+                    console.error('Error fetching:', error)
+            });
     }
     const getCompletedCompanyList =async ()=>{
         await fetch('https://findjobapi.lsapee.com/api/companyT',{
