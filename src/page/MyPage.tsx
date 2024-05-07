@@ -23,7 +23,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
     useEffect(() => {
         // 다시는 보지 않을 공고 정보
         getIgnoreCompanies();
-        getCompletedCompanyList;
+        getCompletedCompanyList();
 
     }, []);
     const handleButtonClick = (button:string) => {
