@@ -128,8 +128,8 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 console.error('There was a problem with your fetch operation:', error);
             });
         if(tt){
-            const updatedJobs = appliedCompanies.filter(job => job.companyName !== companyName);
-            setAppliedCompanies(updatedJobs);
+            const updatedAppliedCompanies = appliedCompanies.filter(job => job.companyName !== companyName);
+            setAppliedCompanies(updatedAppliedCompanies);
         }
 
     }
