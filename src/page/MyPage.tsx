@@ -186,13 +186,13 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                             </tr>
                             </thead>
                             <tbody>
-                            {ignoredJobs.map((job, index) => (
-                                <tr key={job.companyName}>
+                            {ignoredJobs.map((jobs, index) => (
+                                <tr key={jobs.companyName}>
                                     <th scope="row">{index + 1}</th>
-                                    <td>{job.companyName}</td>
-                                    <td>{job.Date.substring(0,10)}</td>
+                                    <td>{jobs.companyName}</td>
+                                    <td>{jobs.Date.substring(0,10)}</td>
                                     <td>
-                                        <button className="btn btn-danger"onClick={(e)=>{companyDelCen(job.companyName) }}>
+                                        <button className="btn btn-danger"onClick={(e)=>{companyDelCen(jobs.companyName) }}>
                                             제외 취소
                                         </button>
                                     </td>
