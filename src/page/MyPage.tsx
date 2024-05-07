@@ -6,16 +6,24 @@ interface ignoredJob {
     Date: string;
 }
 
+interface appliedCompanies{
+    companyName:string
+    date :string
+    siteName:string
+    postTitle:string
+}
+
 const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
     const [selectedButton, setSelectedButton] = useState("button1");
     // 지원한 회사 정보를 저장할 배열
-    const [appliedCompanies, setAppliedCompanies] = useState([]);
+    const [appliedCompanies, setAppliedCompanies] = useState<appliedCompanies[]>([]);
     // 다시는 보지 않을 공고 정보를 저장할 배열
     const [ignoredJobs, setIgnoredJobs] = useState<ignoredJob[]>([]);
     // 버튼 클릭 시 실행되는 함수
     useEffect(() => {
         // 다시는 보지 않을 공고 정보
         getIgnoreCompanies();
+        getCompletedCompanyList;
 
     }, []);
     const handleButtonClick = (button:string) => {
@@ -38,7 +46,24 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 setIgnoredJobs(data)
             })
             .catch(error => console.error('Error fetching:', error));
-
+    }
+    const getCompletedCompanyList =async ()=>{
+        await fetch('https://findjobapi.lsapee.com/api/companys',{
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
+            redirect: 'manual'
+        })
+            .then(response => {
+                if (response.type === 'opaqueredirect') {
+                    return window.location.href = 'https://findjob.lsapee.com';
+                }
+                return response.json()
+            })
+            .then(data => {
+                setAppliedCompanies(data)
+            })
+            .catch(error => console.error('Error fetching:', error));
     }
     const companyDelCen = async (companyName:string) =>{
         const delData = {
@@ -75,9 +100,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         }
 
     }
-
-
-    // 선택된 버튼에 따라 해당 내용을 반환하는 함수
+// 선택된 버튼에 따라 해당 내용을 반환하는 함수
     const getContent = () => {
         switch (selectedButton) {
             case "button1":
@@ -90,28 +113,20 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                 <th scope="col">#</th>
                                 <th scope="col">지원 회사명</th>
                                 <th scope="col">지원 공고명</th>
-                                <th scope="col">지원 날짜</th>
+                                <th scope="col">지원한 사이트</th>
+                                <th scope='col'>지원 날짜</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>임시</td>
-                                <td>임시</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry the Bird</td>
-                                <td>@twitter</td>
-                                <td>@twitter</td>
-                            </tr>
+                            {appliedCompanies.map((job, index) => (
+                                <tr key={job.companyName}>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>{job.companyName}</td>
+                                    <td>{job.postTitle}</td>
+                                    <td>{job.siteName}</td>
+                                    <td>{job.date.substring(0, 10)}</td>
+                                </tr>
+                            ))}
                             </tbody>
                         </table>
                     </div>
@@ -130,7 +145,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                             </tr>
                             </thead>
                             <tbody>
-                                {ignoredJobs.map((job, index) => (
+                            {ignoredJobs.map((job, index) => (
                                 <tr key={job.companyName}>
                                     <th scope="row">{index + 1}</th>
                                     <td>{job.companyName}</td>
@@ -141,7 +156,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                         </button>
                                     </td>
                                 </tr>
-                                ))}
+                            ))}
                             </tbody>
                         </table>
                     </div>

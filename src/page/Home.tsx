@@ -136,7 +136,6 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
     };
 
     const companyDel = async (companyName:string) =>{
-        console.log(companyName);
         const postData = {
             companyName: companyName
         }
@@ -172,6 +171,44 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
         }
 
 
+    }
+    const companyCompleted = async (companyName:string,titleName:string,postUrl:string)=>{
+        const siteName:string = postUrl.includes("jobkorea") ? "잡코리아" : "사람인";
+        const postData ={
+            companyName: companyName,
+            titleName:titleName,
+            siteName:siteName
+        }
+        let tt:boolean=false;
+        await fetch(`https://findjobapi.lsapee.com/api/companyT `,
+            // await fetch(`http://localhost:3001/api/companys `,
+            {method: 'Post',
+                headers: {'Content-Type': 'application/json'},
+                credentials: 'include',
+                body: JSON.stringify(postData),
+            }
+        ).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // JSON 형태로 응답 받기
+        })
+            .then(data => {
+                // 서버로부터 받은 데이터 처리
+                alert("처리 성공")
+                tt=true;
+                console.log('서버 응답 데이터:', data);
+            })
+            .catch(error => {
+                // 오류 처리
+                alert("처리 실패")
+                console.error('There was a problem with your fetch operation:', error);
+            });
+        if(tt){
+            const updatedJobs = jobs.filter(job => job.company !== companyName);
+            // 새로운 배열로 jobs 상태 업데이트
+            setJobs(updatedJobs);
+        }
     }
 
     return (
@@ -250,7 +287,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                                             {/* 지원 완료 버튼 클릭시 마이페이지에서 지원 완료한 목록*/}
                                             {isLoggedIn.isLoggedIn ?
                                                 <>
-                                                    <button className="btn btn-primary"  style={btnStyle}>지원 완료</button>
+                                                    <button className="btn btn-primary"onClick={(e)=>{companyCompleted(job.company,job.postTitle,job.postURL) }}   style={btnStyle}>지원 완료</button>
                                                 <button className="btn btn-danger" onClick={(e)=>{companyDel(job.company) }} style={btnStyle}>해당 업체 공고 보지않기</button>
                                                 </>
                                                 : null}
