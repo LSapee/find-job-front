@@ -20,7 +20,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
     // 다시는 보지 않을 공고 정보를 저장할 배열
     const [ignoredJobs, setIgnoredJobs] = useState<ignoredJob[]>([]);
     // 버튼 클릭 시 실행되는 함수
-    useEffect(() => {
+    useEffect( () => {
         // 다시는 보지 않을 공고 정보
         getIgnoreCompanies();
         getCompletedCompanyList();
@@ -37,7 +37,6 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         })
             .then(response => {
                 if (response.type === 'opaqueredirect') {
-                    alert("zzz");
                     return window.location.href = 'https://findjob.lsapee.com';
                 }
                 return response.json()
