@@ -141,7 +141,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             companyName: companyName
         }
         let tt:boolean=false
-        fetch(`https://findjobapi.lsapee.com/api/companys `,
+        await fetch(`https://findjobapi.lsapee.com/api/companys `,
         // await fetch(`http://localhost:3001/api/companys `,
             {method: 'Post',
                 headers: {'Content-Type': 'application/json'},
@@ -170,6 +170,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             // 새로운 배열로 jobs 상태 업데이트
             setJobs(updatedJobs);
         }
+
 
     }
 

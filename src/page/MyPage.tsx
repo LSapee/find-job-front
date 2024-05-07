@@ -45,7 +45,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             companyName: companyName
         }
         let tt:boolean=false
-        fetch(`https://findjobapi.lsapee.com/api/companys `,
+        await fetch(`https://findjobapi.lsapee.com/api/companys `,
             // await fetch(`http://localhost:3001/api/companys `,
             {method: 'DELETE',
                 headers: {'Content-Type': 'application/json'},
