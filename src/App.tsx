@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import Cookies from 'js-cookie';
 import Header from "./component/Header";
 import Main from "./page/Main";
+import Footer from "./component/Footer";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -20,6 +21,7 @@ function App() {
             <Header isLoggedIn={isLoggedIn} />
             <hr/>
             <Main isLoggedIn={isLoggedIn}/>
+            <Footer isLoggedIn={isLoggedIn} />
         </div>
     );
 }

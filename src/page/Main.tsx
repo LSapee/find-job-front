@@ -18,7 +18,7 @@ const Main:React.FC<UserProps> = ({isLoggedIn}) => {
 };
 
 const mainStyle={
-    minHeight: '80vh',
+    minHeight: '90vh',
     overflow: "auto",
 }
 export default Main;
