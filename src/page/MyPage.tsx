@@ -192,7 +192,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                     <td>{jobs.companyName}</td>
                                     <td>{jobs.Date.substring(0,10)}</td>
                                     <td>
-                                        <button className="btn btn-danger"onClick={(e)=>{companyDelCen(jobs.companyName) }}>
+                                        <button className="btn btn-danger" onClick={(e)=>{companyDelCen(jobs.companyName) }}>
                                             제외 취소
                                         </button>
                                     </td>
