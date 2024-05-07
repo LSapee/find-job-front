@@ -154,22 +154,20 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                             </tr>
                             </thead>
                             <tbody>
-                            {appliedCompanies.map((job, index) => (
-                                <tr key={job.companyName}>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>{job.companyName}</td>
-                                    <td>{job.postTitle}</td>
-                                    <td>{job.siteName}</td>
-                                    <td>{job.date.substring(0, 10)}</td>
-                                    <td>
-                                        <button className="btn btn-danger" onClick={(e) => {
-                                            companyCen(job.companyName)
-                                        }}>
-                                            취소
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                            {/*{appliedCompanies.map((job, index) => (*/}
+                            {/*    <tr key={job.companyName}>*/}
+                            {/*        <th scope="row">{index + 1}</th>*/}
+                            {/*        <td>{job.companyName}</td>*/}
+                            {/*        <td>{job.postTitle}</td>*/}
+                            {/*        <td>{job.siteName}</td>*/}
+                            {/*        <td>{job.date.substring(0, 10)}</td>*/}
+                            {/*        <td>*/}
+                            {/*            <button className="btn btn-danger" onClick={(e) => {companyCen(job.companyName)}}>*/}
+                            {/*                취소*/}
+                            {/*            </button>*/}
+                            {/*        </td>*/}
+                            {/*    </tr>*/}
+                            {/*))}*/}
                             </tbody>
                         </table>
                     </div>
