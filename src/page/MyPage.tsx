@@ -93,10 +93,10 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 alert("처리 실패")
                 console.error('There was a problem with your fetch operation:', error);
             });
-        // if(tt){
-        //     const updatedJobs = ignoredJobs.filter(job => job.companyName !== companyName);
-        //     setIgnoredJobs(updatedJobs);
-        // }
+        if(tt){
+            const updatedJobs = ignoredJobs.filter(job => job.companyName !== companyName);
+            setIgnoredJobs(updatedJobs);
+        }
 
     }
     const companyCen = async (companyName:string) =>{
@@ -129,10 +129,10 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 console.error('There was a problem with your fetch operation:', error);
             });
 
-        // if(tt){
-        //     const updatedAppliedCompanies = appliedCompanies.filter(job => job.companyName !== companyName);
-        //     setAppliedCompanies(updatedAppliedCompanies);
-        // }
+        if(tt){
+            const updatedAppliedCompanies = appliedCompanies.filter(job => job.companyName !== companyName);
+            setAppliedCompanies(updatedAppliedCompanies);
+        }
 
     }
 // 선택된 버튼에 따라 해당 내용을 반환하는 함수
@@ -186,18 +186,18 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                             </tr>
                             </thead>
                             <tbody>
-                            {ignoredJobs.map((job, index) => (
-                                <tr key={job.companyName}>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>{job.companyName}</td>
-                                    <td>{job.Date.substring(0,10)}</td>
-                                    <td>
-                                        <button className="btn btn-danger"onClick={(e)=>{companyDelCen(job.companyName) }}>
-                                            제외 취소
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                            {/*{ignoredJobs.map((job, index) => (*/}
+                            {/*    <tr key={job.companyName}>*/}
+                            {/*        <th scope="row">{index + 1}</th>*/}
+                            {/*        <td>{job.companyName}</td>*/}
+                            {/*        <td>{job.Date.substring(0,10)}</td>*/}
+                            {/*        <td>*/}
+                            {/*            <button className="btn btn-danger"onClick={(e)=>{companyDelCen(job.companyName) }}>*/}
+                            {/*                제외 취소*/}
+                            {/*            </button>*/}
+                            {/*        </td>*/}
+                            {/*    </tr>*/}
+                            {/*))}*/}
                             </tbody>
                         </table>
                     </div>
