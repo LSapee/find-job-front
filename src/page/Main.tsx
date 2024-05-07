@@ -6,7 +6,7 @@ import {UserProps} from "../types";
 
 const Main:React.FC<UserProps> = ({isLoggedIn}) => {
     return (
-        <div className="Main">
+        <div className="Main" style={mainStyle}>
             <Routes >
                 <Route path="/" element={<Home isLoggedIn={isLoggedIn}/>} />
                 <Route path="/Home" element={<Home isLoggedIn={isLoggedIn}/> } />
@@ -17,4 +17,8 @@ const Main:React.FC<UserProps> = ({isLoggedIn}) => {
     );
 };
 
+const mainStyle={
+    minHeight: '80vh',
+    overflow: "auto",
+}
 export default Main;
