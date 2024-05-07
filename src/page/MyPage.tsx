@@ -128,7 +128,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 alert("처리 실패")
                 console.error('There was a problem with your fetch operation:', error);
             });
-        //
+
         // if(tt){
         //     const updatedAppliedCompanies = appliedCompanies.filter(job => job.companyName !== companyName);
         //     setAppliedCompanies(updatedAppliedCompanies);
