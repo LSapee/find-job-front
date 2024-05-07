@@ -12,6 +12,11 @@ interface appliedCompanies{
     siteName:string
     postTitle:string
 }
+interface inputDataType {
+    comN:string
+    postT:string
+    subS:string
+}
 
 const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
     const [selectedButton, setSelectedButton] = useState("button1");
@@ -19,6 +24,13 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
     const [appliedCompanies, setAppliedCompanies] = useState<appliedCompanies[]>([]);
     // 다시는 보지 않을 공고 정보를 저장할 배열
     const [ignoredJobs, setIgnoredJobs] = useState<ignoredJob[]>([]);
+    // input 값을 가져오기 위한
+    const [inputDatas, setInputDatas] = useState<inputDataType>({
+        comN:"",
+        postT:"",
+        subS:"",
+    });
+
     // 버튼 클릭 시 실행되는 함수
     useEffect( () => {
         // 다시는 보지 않을 공고 정보
@@ -45,7 +57,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 setIgnoredJobs(data)
             })
             .catch(error => {
-                return window.location.href = 'https://findjob.lsapee.com';
+                console.error(error)
             });
     }
     const getCompletedCompanyList =async ()=>{
@@ -92,7 +104,6 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             })
             .catch(error => {
                 // 오류 처리
-                alert("처리 실패")
                 console.error('There was a problem with your fetch operation:', error);
             });
         if(tt){
@@ -137,13 +148,102 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         }
 
     }
+    const getInputData = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const {name,value} = event.target;
+        setInputDatas(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    }
+    const writeCompletedCompany = async ()=>{
+        await fetch("https://findjobapi.lsapee.com/api/appCom",{
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
+            body: JSON.stringify(inputDatas),
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // JSON 형태로 응답 받기
+        })
+            .then(data => {
+                // 서버로부터 받은 데이터 처리
+                if(data.success!==undefined) alert(data.success)
+                else{
+                    setAppliedCompanies(prevCompanies => [...prevCompanies, data])
+                }
+            })
+            .catch(error => {
+                // 오류 처리
+                console.error('There was a problem with your fetch operation:', error);
+            });
+    }
 // 선택된 버튼에 따라 해당 내용을 반환하는 함수
     const getContent = () => {
         switch (selectedButton) {
             case "button1":
                 return (
                     <div>
-                        <h2 style={{textAlign:"center"}}>내가 지원한 회사 목록</h2>
+                        <div className="row">
+                            <div className="col"></div>
+                            <div className="col"><h2
+                                style={{textAlign: "center", marginTop: "50px", marginBottom: "50px"}}>내가 지원한 회사 목록</h2>
+                            </div>
+                            <div className="col">
+                                <button className="btn btn-success" style={{
+                                    textAlign: "center",
+                                    marginTop: "50px",
+                                    marginBottom: "50px",
+                                    float: "right"
+                                }}
+                                        data-bs-toggle="collapse" data-bs-target="#jobSet"
+                                >직접 추가하기
+                                </button>
+                            </div>
+                        </div>
+                        <div id="jobSet" className="accordion-collapse collapse collapse"
+                             data-bs-parent="#accordionExample" style={{marginTop: "10px", marginBottom: "50px"}}>
+                            <div className="accordion-body">
+                                <div className="input-group mb-3">
+                                    <input
+                                        id="comN"
+                                        name="comN"
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="회사명"
+                                        value={inputDatas.comN}
+                                        onChange={getInputData}
+                                    />
+                                    <input
+                                        id="postT"
+                                        name="postT"
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="공고명"
+                                        value={inputDatas.postT}
+                                        onChange={getInputData}
+                                    />
+                                    <input
+                                        id="subS"
+                                        name="subS"
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="지원 사이트"
+                                        value={inputDatas.subS}
+                                        onChange={getInputData}
+                                    />
+                                    <button
+                                        className="btn btn-outline-secondary"
+                                        id="button-addon1"
+                                        type="button"
+                                        onClick={writeCompletedCompany}
+                                    >
+                                        추가하기
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <table className="table">
                             <thead>
                             <tr>
@@ -164,7 +264,9 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                     <td>{job.siteName}</td>
                                     <td>{job.date.substring(0, 10)}</td>
                                     <td>
-                                        <button className="btn btn-danger" onClick={(e) => {companyCen(job.companyName)}}>
+                                        <button className="btn btn-danger" onClick={(e) => {
+                                            companyCen(job.companyName)
+                                        }}>
                                             취소
                                         </button>
                                     </td>
@@ -177,7 +279,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             case "button2":
                 return (
                     <div>
-                        <h2 style={{textAlign: "center"}}>제외한 회사 목록</h2>
+                        <h2 style={{textAlign: "center", marginTop: "50px", marginBottom: "50px"}}>제외한 회사 목록</h2>
                         <table className="table">
                             <thead>
                             <tr>
@@ -243,7 +345,6 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
 
 const myPageStyle: React.CSSProperties = {
     marginTop: "20px",
-
 }
 const hStyle: React.CSSProperties = {
     textAlign: "center"
