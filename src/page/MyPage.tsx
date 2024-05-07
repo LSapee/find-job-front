@@ -24,7 +24,6 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         // 다시는 보지 않을 공고 정보
         getIgnoreCompanies();
         getCompletedCompanyList();
-
     }, []);
     const handleButtonClick = (button:string) => {
         setSelectedButton(button); // 클릭한 버튼을 상태에 저장
@@ -87,6 +86,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 // 서버로부터 받은 데이터 처리
                 alert("처리 성공")
                 tt=true;
+                console.log("data",data)
             })
             .catch(error => {
                 // 오류 처리
@@ -121,12 +121,14 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 // 서버로부터 받은 데이터 처리
                 alert("처리 성공")
                 tt=true;
+                console.log("data",data)
             })
             .catch(error => {
                 // 오류 처리
                 alert("처리 실패")
                 console.error('There was a problem with your fetch operation:', error);
             });
+
         if(tt){
             const updatedAppliedCompanies = appliedCompanies.filter(job => job.companyName !== companyName);
             setAppliedCompanies(updatedAppliedCompanies);
