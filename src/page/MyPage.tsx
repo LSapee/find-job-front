@@ -46,8 +46,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 setIgnoredJobs(data)
             })
             .catch(error => {
-                    alert(error);
-                    console.error('Error fetching:', error)
+                return window.location.href = 'https://findjob.lsapee.com';
             });
     }
     const getCompletedCompanyList =async ()=>{
