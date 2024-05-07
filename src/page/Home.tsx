@@ -128,13 +128,10 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             </>
         );
     };
-
-
     const currentData = () => {
         const startIndex = (currentPage - 1) % pagesPerGroup * itemsPerPage;
         return jobs.slice(startIndex, startIndex + itemsPerPage);
     };
-
     const companyDel = async (companyName:string) =>{
         const postData = {
             companyName: companyName
