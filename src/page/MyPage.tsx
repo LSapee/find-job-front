@@ -186,18 +186,18 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                             </tr>
                             </thead>
                             <tbody>
-                            {/*{ignoredJobs.map((job, index) => (*/}
-                            {/*    <tr key={job.companyName}>*/}
-                            {/*        <th scope="row">{index + 1}</th>*/}
-                            {/*        <td>{job.companyName}</td>*/}
-                            {/*        <td>{job.Date.substring(0,10)}</td>*/}
-                            {/*        <td>*/}
-                            {/*            <button className="btn btn-danger"onClick={(e)=>{companyDelCen(job.companyName) }}>*/}
-                            {/*                제외 취소*/}
-                            {/*            </button>*/}
-                            {/*        </td>*/}
-                            {/*    </tr>*/}
-                            {/*))}*/}
+                            {ignoredJobs.map((job, index) => (
+                                <tr key={job.companyName}>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>{job.companyName}</td>
+                                    <td>{job.Date.substring(0,10)}</td>
+                                    <td>
+                                        <button className="btn btn-danger"onClick={(e)=>{companyDelCen(job.companyName) }}>
+                                            제외 취소
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                             </tbody>
                         </table>
                     </div>
