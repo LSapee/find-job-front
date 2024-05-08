@@ -152,7 +152,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
         })
             .then(data => {
                 // 서버로부터 받은 데이터 처리
-                alert("처리 성공")
+                alert(data.success)
                 tt=true;
             })
             .catch(error => {
@@ -191,7 +191,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
         })
             .then(data => {
                 // 서버로부터 받은 데이터 처리
-                alert("처리 성공")
+                alert(data.success)
                 tt=true;
             })
             .catch(error => {
