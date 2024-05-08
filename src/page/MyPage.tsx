@@ -98,9 +98,8 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         })
             .then(data => {
                 // 서버로부터 받은 데이터 처리
-                alert("처리 성공")
+                alert(data.success)
                 tt=true;
-                console.log("data",data)
             })
             .catch(error => {
                 // 오류 처리
@@ -132,9 +131,8 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         })
             .then(data => {
                 // 서버로부터 받은 데이터 처리
-                alert("처리 성공")
+                alert(data.success)
                 tt=true;
-                console.log("data",data)
             })
             .catch(error => {
                 // 오류 처리
