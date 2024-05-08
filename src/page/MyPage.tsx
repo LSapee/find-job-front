@@ -190,6 +190,21 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 console.error('There was a problem with your fetch operation:', error);
             });
     }
+    const makeCSV =()=>{
+        const csvHeader = "지원한 회사,지원한 공고,지원한 사이트,지원한 날짜\n";
+        const csvData = appliedCompanies.map(data => `${data.companyName},${data.postTitle},${data.siteName},${data.date}`);
+        const csvReslult = csvHeader+csvData.join("\n");
+
+        const blob = new Blob([csvReslult], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", "data.csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 // 선택된 버튼에 따라 해당 내용을 반환하는 함수
     const getContent = () => {
         switch (selectedButton) {
@@ -201,16 +216,27 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                             <div className="col"><h2
                                 style={{textAlign: "center", marginTop: "50px", marginBottom: "50px"}}>내가 지원한 회사 목록</h2>
                             </div>
-                            <div className="col">
+                            <div className="col" >
+                                <button className="btn btn-success" style={{
+                                    textAlign: "center",
+                                    marginTop: "50px",
+                                    marginBottom: "50px",
+                                    float: "right",
+                                    marginLeft:"20px"
+                                }}
+                                        data-bs-toggle="collapse" data-bs-target="#jobSet"
+                                >직접 추가하기
+                                </button>
                                 <button className="btn btn-success" style={{
                                     textAlign: "center",
                                     marginTop: "50px",
                                     marginBottom: "50px",
                                     float: "right"
                                 }}
-                                        data-bs-toggle="collapse" data-bs-target="#jobSet"
-                                >직접 추가하기
+                                        onClick={event => makeCSV()}
+                                >CSV 다운로드
                                 </button>
+
                             </div>
                         </div>
                         <div id="jobSet" className="accordion-collapse collapse collapse"
