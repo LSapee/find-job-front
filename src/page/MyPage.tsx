@@ -192,7 +192,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
     }
     const makeCSV =()=>{
         const csvHeader = "지원한 회사,지원한 공고,지원한 사이트,지원한 날짜\n";
-        const csvData = appliedCompanies.map(data => `${data.companyName},${data.postTitle},${data.siteName},${data.date}`);
+        const csvData = appliedCompanies.map(data => `${data.companyName},${data.postTitle},${data.siteName},${data.date.substring(0,10)}`);
         const csvReslult = csvHeader+csvData.join("\n");
 
         const blob = new Blob([csvReslult], { type: 'text/csv;charset=utf-8;' });
