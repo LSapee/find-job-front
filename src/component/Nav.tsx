@@ -22,7 +22,7 @@ const Nav: React.FC<UserProps> = ({ isLoggedIn }) => {
             <ul className="dropdown-menu">
                 <li><Link className="dropdown-item" to="/Home">Home</Link></li>
                 <li><Link className="dropdown-item" to="/MyPage">MyPage</Link></li>
-                {/*<li onClick={tempLogin} className="dropdown-item">임시 로그인 확인용</li>*/}
+                <li><Link className="dropdown-item" to="/About">About</Link></li>
                 <li>
                     <hr className="dropdown-divider"/>
                 </li>
