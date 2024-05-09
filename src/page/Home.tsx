@@ -207,17 +207,17 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
     }
 
     return (
-        <div className="container-fluid" style={{paddingTop:30, margin: 0,paddingLeft: 0, paddingRight: 0}}>
+        <div className="container-fluid" style={{margin: 0,paddingLeft: 0, paddingRight: 0}}>
             <div className="row">
                 <div className="col-2"></div>
-                <div className="col-8">
+                <div className="col-8" style={{background:"#fff", minHeight:"90vh", paddingTop:"50px"}}>
                     <select id="searchTitle" className="form-select" style={searchTitleStyle}>
                         <option value="00">검색어를 선택해주세요</option>
                         {keywordLists.map((keyword, index) => (
                             <option key={index} value={keyword}>{keyword}</option>
                         ))}
                     </select>
-                    <div className="row">
+                    <div className="row" style={{marginTop:"20px"}}>
                         <div className="col-2">
                             <select className="form-select" id="exp">
                                 <option value="전부">전부</option>

@@ -19,7 +19,7 @@ function App() {
     return (
         <div className="App">
             <Header isLoggedIn={isLoggedIn} />
-            <hr/>
+            <hr style={{margin:0}}/>
             <Main isLoggedIn={isLoggedIn}/>
             <Footer isLoggedIn={isLoggedIn} />
         </div>
