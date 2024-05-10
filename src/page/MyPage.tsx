@@ -356,16 +356,16 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         }
     }, [isLoggedIn]);
     return (
-        <div className="container">
+        <div className="container" style={mainContinerStyle}>
             {/* 버튼 1 */}
             <div className="row">
                 <div className="col">
-                    <button className="btn btn-light" style={btnStyle} onClick={() => handleButtonClick("button1")}>
+                    <button className="btn btn-light" id="button1" style={btnStyle} onClick={() => handleButtonClick("button1")}>
                         내가 지원한 기업목록 보기
                     </button>
                 </div>
                 <div className="col">
-                    <button className="btn btn-light" style={btnStyle} onClick={() => handleButtonClick("button2")}>
+                    <button className="btn btn-light" id="button2" style={btnStyle} onClick={() => handleButtonClick("button2")}>
                         보지 않기로한 기업 목록 보기
                     </button>
                 </div>
@@ -390,5 +390,13 @@ const btnStyle:React.CSSProperties = {
     width: "100%",
     fontSize:"24px"
 }
+const mainContinerStyle:React.CSSProperties = {
+    backgroundColor: "white",
+    paddingTop:"30px",
+    minHeight:"90vh"
+}
+// const btnColorStyle:React.CSSProperties = {
+//     backgroundColor:"#CA88E3"
+// }
 
 export default MyPage;
