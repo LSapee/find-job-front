@@ -304,7 +304,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                         <button className="btn btn-danger" onClick={(e) => {
                                             companyCen(job.companyName)
                                         }}>
-                                            취소
+                                            삭제
                                         </button>
                                     </td>
                                 </tr>
