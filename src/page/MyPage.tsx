@@ -195,7 +195,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         const csvData = appliedCompanies.map(data => `${data.companyName},${data.postTitle},${data.siteName},${data.date.substring(0,10)}`);
         const csvReslult = csvHeader+csvData.join("\n");
 
-        const blob = new Blob([csvReslult], { type: 'text/csv;charset=utf-8;' });
+        const blob = new Blob(["\ufeff"+csvReslult], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.setAttribute("href", url);
