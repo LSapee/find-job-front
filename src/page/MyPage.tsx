@@ -290,7 +290,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                 <th scope="col">지원 공고명</th>
                                 <th scope="col">지원한 사이트</th>
                                 <th scope='col'>지원 날짜</th>
-                                <th scope='col'>진행상황</th>
+                                <th scope='col' style={{textAlign:"center"}}>진행상황</th>
                                 <th scope='col'>삭제</th>
                             </tr>
                             </thead>
