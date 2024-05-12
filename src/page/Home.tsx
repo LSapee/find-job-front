@@ -19,8 +19,8 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageGroup, setPageGroup] = useState(1);
     const [initialLoad, setInitialLoad] = useState(true);
-
-
+    const [lastPage, setLastPage] = useState(0);
+    const [hasNextPages, setHasNextPages] = useState(true);
     const itemsPerPage = 10;
     const pagesPerGroup = 10;
     useEffect(() => {
@@ -60,12 +60,14 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             console.error("키워드를 가져오는 중 오류가 발생했습니다:", error);
         }
     };
-    const getJob = useCallback(async (startNum: number) => {
+    const getJobs = useCallback(async (startNum: number) => {
         const [{ title, myExp, expAll }] = inputGet();  // 배열의 첫 번째 요소 사용
         if(startNum===0){
             setJobs([]);
             setCurrentPage(1);
             setPageGroup(1);
+            setLastPage(0);
+            setHasNextPages(true);
         }
         try {
             const response = await fetch(`https://findjobapi.lsapee.com/api/getjobs?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
@@ -78,6 +80,8 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             const myData: MyList[] = await response.json();
             if (Array.isArray(myData)) {  // 서버로부터 받은 데이터가 배열인지 확인
                 setJobs(myData);
+                setLastPage(lastPage+myData.length);
+                if(myData.length===0) setHasNextPages(false);
             } else {
                 setJobs([]);  // 배열이 아니면 빈 배열 설정
                 console.error('Received data is not an array:', myData);
@@ -92,12 +96,12 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
     useEffect(() => {
         if (!initialLoad) {
             const firstPageOfGroup = (pageGroup - 1) * pagesPerGroup * itemsPerPage;
-            getJob(firstPageOfGroup);
+            getJobs(firstPageOfGroup);
         } else {
             // 초기 실행시
             setInitialLoad(false);
         }
-    }, [pageGroup, getJob]);
+    }, [pageGroup, getJobs]);
     // 페이지네이션 버튼 생성
     const renderPageNumbers = () => {
         const startPage = (pageGroup - 1) * pagesPerGroup + 1;
@@ -108,7 +112,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                     <button onClick={() => {
                         setPageGroup(pageGroup - 1);
                         setCurrentPage((pageGroup - 2) * pagesPerGroup + 1);
-                        getJob(((pageGroup - 2) * pagesPerGroup) * itemsPerPage); // 이전 그룹의 첫 페이지 데이터를 불러옵니다.
+                        getJobs(lastPage); // 이전 그룹의 첫 페이지 데이터를 불러옵니다.
                     }} style={pageBoxStyle}>{"<"}</button>
                 )}
                 {Array.from({ length: pagesPerGroup }, (_, i) => startPage + i).map(page =>
@@ -123,7 +127,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                     setPageGroup(newPageGroup);
                     const newStartPage = (newPageGroup - 1) * pagesPerGroup + 1;
                     setCurrentPage(newStartPage); // 다음 그룹의 첫 페이지로 설정
-                    getJob((newStartPage - 1) * itemsPerPage); // 다음 그룹의 첫 페이지 데이터를 불러옵니다.
+                    getJobs(lastPage); // 다음 그룹의 첫 페이지 데이터를 불러옵니다.
                 }}  style={pageBoxStyle}>{">"}</button>
             </>
         );
@@ -165,6 +169,9 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             // 새로운 배열로 jobs 상태 업데이트
             setJobs(updatedJobs);
         }
+        if(jobs.length<100&& hasNextPages){
+            getJobs(lastPage);
+        }
 
 
     }
@@ -203,6 +210,9 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             const updatedJobs = jobs.filter(job => job.company !== companyName);
             // 새로운 배열로 jobs 상태 업데이트
             setJobs(updatedJobs);
+        }
+        if(jobs.length<100&& hasNextPages){
+            getJobs(lastPage);
         }
     }
 
@@ -247,7 +257,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                             <div className="row">
                                 <div className="col-6"></div>
                                 <div className="col-6">
-                                    <button onClick={() => getJob(0)} className="btn btn-info" style={{width: '100%'}}>
+                                    <button onClick={() => getJobs(0)} className="btn btn-info" style={{width: '100%'}}>
                                         데이터 가져오기
                                     </button>
                                 </div>
