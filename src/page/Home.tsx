@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {UserProps} from "../types";
-
 type MyList = {
     company: string;
     postTitle: string;
@@ -11,16 +10,15 @@ type MyList = {
     endDate: string;
     postURL: string
 };
-
 const Home:React.FC<UserProps>= (isLoggedIn) => {
     //키워드 가져와서 보관
     const [keywordLists, setKeywordLists] = useState<string[]>([]);
     const [jobs, setJobs] = useState<MyList[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [pageGroup, setPageGroup] = useState(1);
+    const [startPost ,setStartPost] = useState(0);
     const [initialLoad, setInitialLoad] = useState(true);
-    const itemsPerPage = 10;
-    const pagesPerGroup = 10;
+    const [hasMoreData, setHasMoreData] = useState(true);
+    const [pageRange, setPageRange] = useState({ start: 1, end: 10 });
     useEffect(() => {
         keywordGet();
     }, []); // 페이지 들어오자마자 로딩
@@ -54,77 +52,6 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             console.error("키워드를 가져오는 중 오류가 발생했습니다:", error);
         }
     }; // 키워드 가져오기
-    const getJobs = useCallback(async (startNum: number) => {
-        const [{ title, myExp, expAll }] = inputGet();  // 배열의 첫 번째 요소 사용
-        if(startNum===0){
-            setJobs([]);
-            setCurrentPage(1);
-            setPageGroup(1);
-        }
-        try {
-            const response = await fetch(`https://findjobapi.lsapee.com/api/getjobs?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
-                // const response = await fetch(`http://localhost:3001/api/getjobs?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
-                {method: 'Get',
-                    headers: {'Content-Type': 'application/json'},
-                    credentials: 'include',
-                }
-            );
-            const myData: MyList[] = await response.json();
-            if (Array.isArray(myData)) {  // 서버로부터 받은 데이터가 배열인지 확인
-                setJobs(myData);
-            } else {
-                setJobs([]);  // 배열이 아니면 빈 배열 설정
-                console.error('Received data is not an array:', myData);
-            }
-        } catch (error) {
-            console.error('Failed to fetch jobs:', error);
-            setJobs([]);  // 오류 발생 시 빈 배열 설정
-        }
-    },[]);
-    // 페이지 그룹이 변경될 때 새로운 데이터 불러오기
-    useEffect(() => {
-        if (!initialLoad) {
-            const firstPageOfGroup = (pageGroup - 1) * pagesPerGroup * itemsPerPage;
-            getJobs(firstPageOfGroup);
-        } else {
-            // 초기 실행시
-            setInitialLoad(false);
-        }
-    }, [pageGroup, getJobs]);
-    // 페이지네이션 버튼 생성
-    const renderPageNumbers = () => {
-        const startPage = (pageGroup - 1) * pagesPerGroup + 1;
-        // const endPage = startPage + pagesPerGroup - 1;
-        return (
-            <>
-                {startPage > 1 && (
-                    <button onClick={() => {
-                        setPageGroup(pageGroup - 1);
-                        setCurrentPage((pageGroup - 2) * pagesPerGroup + 1);
-                        getJobs(((pageGroup - 2) * pagesPerGroup) * itemsPerPage); // 이전 그룹의 첫 페이지 데이터를 불러옵니다.
-                    }} style={pageBoxStyle}>{"<"}</button>
-                )}
-                {Array.from({ length: pagesPerGroup }, (_, i) => startPage + i).map(page =>
-                    <button key={page} disabled={currentPage === page} onClick={() => {
-                        setCurrentPage(page);
-                    }} style={pageBoxStyle}>
-                        {page}
-                    </button>
-                )}
-                <button onClick={() => {
-                    const newPageGroup = pageGroup + 1;
-                    setPageGroup(newPageGroup);
-                    const newStartPage = (newPageGroup - 1) * pagesPerGroup + 1;
-                    setCurrentPage(newStartPage); // 다음 그룹의 첫 페이지로 설정
-                    getJobs((newStartPage - 1) * itemsPerPage); // 다음 그룹의 첫 페이지 데이터를 불러옵니다.
-                }}  style={pageBoxStyle}>{">"}</button>
-            </>
-        );
-    };
-    const currentData = () => {
-        const startIndex = (currentPage - 1) % pagesPerGroup * itemsPerPage;
-        return jobs.slice(startIndex, startIndex + itemsPerPage);
-    };
     const companyDel = async (companyName:string) =>{
         const postData = {
             companyName: companyName
@@ -158,7 +85,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             // 새로운 배열로 jobs 상태 업데이트
             setJobs(updatedJobs);
         }
-    }
+    } //제외 버튼
     const companyCompleted = async (companyName:string,titleName:string,postUrl:string)=>{
         const siteName:string = postUrl.includes("jobkorea") ? "잡코리아" : "사람인";
         const postData ={
@@ -195,7 +122,78 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             // 새로운 배열로 jobs 상태 업데이트
             setJobs(updatedJobs);
         }
-    }
+    } //지원 완료 버튼
+    const getJobs = async (startNum: number) => {
+        const [{ title, myExp, expAll }] = inputGet();  // 배열의 첫 번째 요소 사용
+        if(startNum===0){
+            setJobs([]);
+            setPageRange({ start: 1, end: 10 });
+            setHasMoreData(true);
+        }
+        if(!hasMoreData){
+            alert("현재 페이지가 마지막 페이지입니다.")
+        }
+        try {
+            // const response = await fetch(`https://findjobapi.lsapee.com/api/getjobs?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
+            const response = await fetch(`http://localhost:3001/api/getjobs?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
+                {method: 'Get',
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: 'include',
+                }
+            );
+            const myData: MyList[] = await response.json();
+            if (Array.isArray(myData)) {  // 서버로부터 받은 데이터가 배열인지 확인
+                if(myData.length===0){
+                    setHasMoreData(false);
+                    alert("현재 페이지가 마지막 페이지입니다.")
+                    return ;
+                }
+                setJobs(jobs=>[...jobs,...myData]);
+                setStartPost(startPost+myData.length);
+            } else {
+                setJobs([]);  // 배열이 아니면 빈 배열 설정
+                console.error('Received data is not an array:', myData);
+            }
+        } catch (error) {
+            console.error('Failed to fetch jobs:', error);
+            setJobs([]);  // 오류 발생 시 빈 배열 설정
+        }
+    };
+    useEffect(() => {
+        if (initialLoad) {
+            // 초기 실행시
+            setInitialLoad(false);
+        }
+    }, [getJobs]);
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
+    const handleNextSet = () => {
+        const nextPage = currentPage + 10;
+        setPageRange({ start: pageRange.start + 10, end: pageRange.end + 10 });
+        if (nextPage * 10 >= jobs.length && hasMoreData) {
+            getJobs(startPost);
+        }
+        handlePageChange(nextPage);
+    };
+    const handlePreviousSet = () => {
+        if (pageRange.start > 1) {
+            const prevPage = currentPage - 10;
+            setPageRange({ start: pageRange.start - 10, end: pageRange.end - 10 });
+            handlePageChange(prevPage);
+        }
+    };
+    const renderPageNumbers = () => {
+        const one = jobs.length%10==0?0:1;
+        const maxPage = Math.floor(jobs.length / 10)+one;
+        const lastPage = Math.min(pageRange.end, maxPage);
+        return Array.from({ length: lastPage - pageRange.start + 1 }, (_, index) => (
+            <button key={pageRange.start + index} onClick={() => handlePageChange(pageRange.start + index)} style={pageBoxStyle}>
+                {pageRange.start + index}
+            </button>
+        ));
+    };
+    const currentData = jobs.slice((currentPage - 1) * 10, currentPage * 10);
     return (
         <div className="container-fluid" style={{margin: 0,paddingLeft: 0, paddingRight: 0}}>
             <div className="row">
@@ -246,7 +244,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                     </div>
                     <div style={{marginTop: 10}}>
                         <div id="st" style={{padding: 0}} className="row justify-content-center gx-5">
-                            {currentData().map((job, index) => (
+                            {currentData.map((job, index) => (
                                 <div key={index} className="col-6 mb-4 mr-3"style={{marginTop:"20px" ,padding:"10px"}}>
                                     <div className="card">
                                     <div className="card-header">
@@ -288,7 +286,9 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                             <div className="col-10" id="pageList"
                                  style={{position: "relative",textAlign: "center"}}>
                                 <div>
+                                    {pageRange.start > 1 && <button onClick={handlePreviousSet} style={pageBoxStyle}>{"<"}</button>}
                                     {renderPageNumbers()}
+                                    {hasMoreData && pageRange.end <= jobs.length / 10 && <button onClick={handleNextSet} style={pageBoxStyle}>{">"}</button>}
                                 </div>
                                 <div className="col-1"></div>
                             </div>
