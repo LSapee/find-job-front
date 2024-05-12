@@ -14,13 +14,13 @@ type MyList = {
 
 const Home:React.FC<UserProps>= (isLoggedIn) => {
     //키워드 가져와서 보관
-    const [keywordLists, setKeywordLists] = useState<string[]>([]);
-    const [jobs, setJobs] = useState<MyList[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageGroup, setPageGroup] = useState(1);
+    const [keywordLists, setKeywordLists] = useState<string[]>([]); // 키워드 보관
+    const [jobs, setJobs] = useState<MyList[]>([]); // jobs 데이터 보관
+    const [currentPage, setCurrentPage] = useState(1); //
+    const [pageGroup, setPageGroup] = useState(1); //
     const [initialLoad, setInitialLoad] = useState(true);
     const [lastPage, setLastPage] = useState(0);
-    const [hasNextPages, setHasNextPages] = useState(true);
+    // const [hasNextPages, setHasNextPages] = useState(true);
     const itemsPerPage = 10;
     const pagesPerGroup = 10;
     useEffect(() => {
@@ -29,11 +29,9 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
 
     const inputGet = () => {
         const inputMapping = [];
-
         const titleElement = document.getElementById("searchTitle") as HTMLInputElement;
         const myExpElement = document.getElementById("exp") as HTMLInputElement;
         const expAllElement = document.getElementById("expAll") as HTMLInputElement;
-
         if (titleElement && myExpElement && expAllElement) {
             const title = titleElement.value;
             const myExp = myExpElement.value;
@@ -67,7 +65,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             setCurrentPage(1);
             setPageGroup(1);
             setLastPage(0);
-            setHasNextPages(true);
+            // setHasNextPages(true);
         }
         try {
             const response = await fetch(`https://findjobapi.lsapee.com/api/getjobs?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
@@ -79,9 +77,8 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                 );
             const myData: MyList[] = await response.json();
             if (Array.isArray(myData)) {  // 서버로부터 받은 데이터가 배열인지 확인
-                setJobs([...jobs,...myData]);
-                setLastPage(lastPage+myData.length);
-                if(myData.length===0) setHasNextPages(false);
+                setJobs(myData);
+                // if(myData.length===0) setHasNextPages(false);
             } else {
                 setJobs([]);  // 배열이 아니면 빈 배열 설정
                 console.error('Received data is not an array:', myData);
@@ -95,13 +92,12 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
     // 페이지 그룹이 변경될 때 새로운 데이터 불러오기
     useEffect(() => {
         if (!initialLoad) {
-            const firstPageOfGroup = (pageGroup - 1) * pagesPerGroup * itemsPerPage;
-            getJobs(firstPageOfGroup);
+            getJobs(0);
         } else {
             // 초기 실행시
             setInitialLoad(false);
         }
-    }, [pageGroup, getJobs]);
+    }, []);
     // 페이지네이션 버튼 생성
     const renderPageNumbers = () => {
         const startPage = (pageGroup - 1) * pagesPerGroup + 1;
@@ -112,7 +108,6 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                     <button onClick={() => {
                         setPageGroup(pageGroup - 1);
                         setCurrentPage((pageGroup - 2) * pagesPerGroup + 1);
-                        getJobs(lastPage); // 이전 그룹의 첫 페이지 데이터를 불러옵니다.
                     }} style={pageBoxStyle}>{"<"}</button>
                 )}
                 {Array.from({ length: pagesPerGroup }, (_, i) => startPage + i).map(page =>
@@ -169,11 +164,6 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             // 새로운 배열로 jobs 상태 업데이트
             setJobs(updatedJobs);
         }
-        if(jobs.length<100&& hasNextPages){
-            getJobs(lastPage);
-        }
-
-
     }
     const companyCompleted = async (companyName:string,titleName:string,postUrl:string)=>{
         const siteName:string = postUrl.includes("jobkorea") ? "잡코리아" : "사람인";
@@ -210,9 +200,6 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             const updatedJobs = jobs.filter(job => job.company !== companyName);
             // 새로운 배열로 jobs 상태 업데이트
             setJobs(updatedJobs);
-        }
-        if(jobs.length<100&& hasNextPages){
-            getJobs(lastPage);
         }
     }
 
