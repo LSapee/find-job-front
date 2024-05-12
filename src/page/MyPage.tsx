@@ -302,9 +302,8 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                     <td>{job.postTitle}</td>
                                     <td>{job.siteName}</td>
                                     <td>{job.date.substring(0, 10)}</td>
-                                    <td>{job.status}</td>
                                     <td>
-                                        지원 완료
+                                        {job.status} &nbsp
                                         <button className="btn btn-secondary" onClick={(e) => {
                                             companyCen("btnC"+(index+1))
                                         }}>
