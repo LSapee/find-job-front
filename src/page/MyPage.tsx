@@ -31,6 +31,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         postT:"",
         subS:"",
     });
+    const jobsPerPage = 25;
 
     // 버튼 클릭 시 실행되는 함수
     useEffect( () => {
@@ -38,6 +39,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         getIgnoreCompanies();
         getCompletedCompanyList();
     }, []);
+
     const handleButtonClick = (button:string) => {
         setSelectedButton(button); // 클릭한 버튼을 상태에 저장
     };
@@ -192,10 +194,9 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             });
     }
     const makeCSV =()=>{
-        const csvHeader = "지원한 회사,지원한 공고,지원한 사이트,지원한 날짜\n";
-        const csvData = appliedCompanies.map(data => `${data.companyName},${data.postTitle},${data.siteName},${data.date.substring(0,10)}`);
+        const csvHeader = "지원한 회사,지원한 공고,지원한 사이트,지원한 날짜,진행상황\n";
+        const csvData = appliedCompanies.map(data => `${data.companyName},${data.postTitle},${data.siteName},${data.date.substring(0,10)},${data.status}`);
         const csvReslult = csvHeader+csvData.join("\n");
-
         const blob = new Blob(["\ufeff"+csvReslult], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
@@ -209,6 +210,8 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
     const noting =() =>{
         alert("아직 준비중입니다.")
     }
+
+
 // 선택된 버튼에 따라 해당 내용을 반환하는 함수
     const getContent = () => {
         switch (selectedButton) {
@@ -322,6 +325,9 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                             ))}
                             </tbody>
                         </table>
+                        <div>
+                            페이지네이션
+                        </div>
                     </div>
                 );
             case "button2":
