@@ -206,6 +206,9 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         link.click();
         document.body.removeChild(link);
     }
+    const noting =() =>{
+        alert("아직 준비중입니다.")
+    }
 // 선택된 버튼에 따라 해당 내용을 반환하는 함수
     const getContent = () => {
         switch (selectedButton) {
@@ -304,7 +307,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                     <td>{job.date.substring(0, 10)}</td>
                                     <td>
                                         {job.status} &ensp;
-                                        <button className="btn btn-secondary">
+                                        <button className="btn btn-secondary" onClick={(e)=>{noting()}}>
                                             변경하기
                                         </button>
                                     </td>
