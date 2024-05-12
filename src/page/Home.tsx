@@ -14,19 +14,16 @@ type MyList = {
 
 const Home:React.FC<UserProps>= (isLoggedIn) => {
     //키워드 가져와서 보관
-    const [keywordLists, setKeywordLists] = useState<string[]>([]); // 키워드 보관
-    const [jobs, setJobs] = useState<MyList[]>([]); // jobs 데이터 보관
-    const [currentPage, setCurrentPage] = useState(1); //
-    const [pageGroup, setPageGroup] = useState(1); //
+    const [keywordLists, setKeywordLists] = useState<string[]>([]);
+    const [jobs, setJobs] = useState<MyList[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageGroup, setPageGroup] = useState(1);
     const [initialLoad, setInitialLoad] = useState(true);
-    const [lastPage, setLastPage] = useState(0);
-    // const [hasNextPages, setHasNextPages] = useState(true);
     const itemsPerPage = 10;
     const pagesPerGroup = 10;
     useEffect(() => {
         keywordGet();
     }, []); // 페이지 들어오자마자 로딩
-
     const inputGet = () => {
         const inputMapping = [];
         const titleElement = document.getElementById("searchTitle") as HTMLInputElement;
@@ -42,11 +39,10 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                 expAll: expAll
             });
         } else {
-            // 오류 처리 또는 경고 메시지를 표시합니다.
             console.error("One or more input elements are not found.");
         }
         return inputMapping;
-    };
+    }; // 인풋 가져오기
     const keywordGet = async () => {
         try {
             const response = await fetch("https://findjobapi.lsapee.com/api/getKeywords");
@@ -57,28 +53,25 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
         } catch (error) {
             console.error("키워드를 가져오는 중 오류가 발생했습니다:", error);
         }
-    };
+    }; // 키워드 가져오기
     const getJobs = useCallback(async (startNum: number) => {
         const [{ title, myExp, expAll }] = inputGet();  // 배열의 첫 번째 요소 사용
         if(startNum===0){
             setJobs([]);
             setCurrentPage(1);
             setPageGroup(1);
-            setLastPage(0);
-            // setHasNextPages(true);
         }
         try {
             const response = await fetch(`https://findjobapi.lsapee.com/api/getjobs?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
-            // const response = await fetch(`http://localhost:3001/api/getjob?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
+                // const response = await fetch(`http://localhost:3001/api/getjobs?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
                 {method: 'Get',
                     headers: {'Content-Type': 'application/json'},
                     credentials: 'include',
                 }
-                );
+            );
             const myData: MyList[] = await response.json();
             if (Array.isArray(myData)) {  // 서버로부터 받은 데이터가 배열인지 확인
                 setJobs(myData);
-                // if(myData.length===0) setHasNextPages(false);
             } else {
                 setJobs([]);  // 배열이 아니면 빈 배열 설정
                 console.error('Received data is not an array:', myData);
@@ -88,16 +81,16 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             setJobs([]);  // 오류 발생 시 빈 배열 설정
         }
     },[]);
-
     // 페이지 그룹이 변경될 때 새로운 데이터 불러오기
     useEffect(() => {
         if (!initialLoad) {
-            getJobs(0);
+            const firstPageOfGroup = (pageGroup - 1) * pagesPerGroup * itemsPerPage;
+            getJobs(firstPageOfGroup);
         } else {
             // 초기 실행시
             setInitialLoad(false);
         }
-    }, []);
+    }, [pageGroup, getJobs]);
     // 페이지네이션 버튼 생성
     const renderPageNumbers = () => {
         const startPage = (pageGroup - 1) * pagesPerGroup + 1;
@@ -108,6 +101,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                     <button onClick={() => {
                         setPageGroup(pageGroup - 1);
                         setCurrentPage((pageGroup - 2) * pagesPerGroup + 1);
+                        getJobs(((pageGroup - 2) * pagesPerGroup) * itemsPerPage); // 이전 그룹의 첫 페이지 데이터를 불러옵니다.
                     }} style={pageBoxStyle}>{"<"}</button>
                 )}
                 {Array.from({ length: pagesPerGroup }, (_, i) => startPage + i).map(page =>
@@ -122,7 +116,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                     setPageGroup(newPageGroup);
                     const newStartPage = (newPageGroup - 1) * pagesPerGroup + 1;
                     setCurrentPage(newStartPage); // 다음 그룹의 첫 페이지로 설정
-                    getJobs(lastPage); // 다음 그룹의 첫 페이지 데이터를 불러옵니다.
+                    getJobs((newStartPage - 1) * itemsPerPage); // 다음 그룹의 첫 페이지 데이터를 불러옵니다.
                 }}  style={pageBoxStyle}>{">"}</button>
             </>
         );
@@ -137,7 +131,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
         }
         let tt:boolean=false
         await fetch(`https://findjobapi.lsapee.com/api/companys `,
-        // await fetch(`http://localhost:3001/api/companys `,
+            // await fetch(`http://localhost:3001/api/companys `,
             {method: 'Post',
                 headers: {'Content-Type': 'application/json'},
                 credentials: 'include',
@@ -202,7 +196,6 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             setJobs(updatedJobs);
         }
     }
-
     return (
         <div className="container-fluid" style={{margin: 0,paddingLeft: 0, paddingRight: 0}}>
             <div className="row">
