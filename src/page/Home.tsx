@@ -79,7 +79,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                 );
             const myData: MyList[] = await response.json();
             if (Array.isArray(myData)) {  // 서버로부터 받은 데이터가 배열인지 확인
-                setJobs(myData);
+                setJobs([...jobs,...myData]);
                 setLastPage(lastPage+myData.length);
                 if(myData.length===0) setHasNextPages(false);
             } else {
