@@ -11,6 +11,7 @@ interface appliedCompanies{
     date :string
     siteName:string
     postTitle:string
+    status:string
 }
 interface inputDataType {
     comN:string
@@ -289,6 +290,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                 <th scope="col">지원 공고명</th>
                                 <th scope="col">지원한 사이트</th>
                                 <th scope='col'>지원 날짜</th>
+                                <th scope='col'>진행상황</th>
                                 <th scope='col'>삭제</th>
                             </tr>
                             </thead>
@@ -300,11 +302,20 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                     <td>{job.postTitle}</td>
                                     <td>{job.siteName}</td>
                                     <td>{job.date.substring(0, 10)}</td>
+                                    <td>{job.status}</td>
+                                    <td>
+                                        지원 완료
+                                        <button className="btn btn-secondary" onClick={(e) => {
+                                            companyCen("btnC"+(index+1))
+                                        }}>
+                                            변경하기
+                                        </button>
+                                    </td>
                                     <td>
                                         <button className="btn btn-danger" onClick={(e) => {
                                             companyCen(job.companyName)
                                         }}>
-                                            삭제
+                                        삭제
                                         </button>
                                     </td>
                                 </tr>
