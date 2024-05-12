@@ -134,8 +134,8 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             alert("현재 페이지가 마지막 페이지입니다.")
         }
         try {
-            // const response = await fetch(`https://findjobapi.lsapee.com/api/getjobs?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
-            const response = await fetch(`http://localhost:3001/api/getjobs?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
+            const response = await fetch(`https://findjobapi.lsapee.com/api/getjobs?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
+            // const response = await fetch(`http://localhost:3001/api/getjobs?search=${title}&expAll=${expAll}&exp=${myExp}&startNum=${startNum}`,
                 {method: 'Get',
                     headers: {'Content-Type': 'application/json'},
                     credentials: 'include',
