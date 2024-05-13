@@ -167,6 +167,18 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
     }, [getJobs]);
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
+        const k = document.getElementsByClassName("numberBtn");
+        for(let i=0; i<k.length; i++){
+            const btnElement = k[i] as HTMLElement;
+            btnElement.style.fontWeight="normal";
+            btnElement.style.color="black";
+            btnElement.style.fontSize="16px";
+        }
+        const thisPageBtn = document.getElementsByClassName(`numberBtn${page-1}`);
+        const thisBtn = thisPageBtn[0] as HTMLElement;
+        thisBtn.style.fontWeight="bolder";
+        thisBtn.style.fontSize="20px";
+        thisBtn.style.color="#B464EB";
     };
     const handleNextSet = () => {
         const nextPage = currentPage + 10;
@@ -188,7 +200,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
         const maxPage = Math.floor(jobs.length / 10)+one;
         const lastPage = Math.min(pageRange.end, maxPage);
         return Array.from({ length: lastPage - pageRange.start + 1 }, (_, index) => (
-            <button key={pageRange.start + index} onClick={() => handlePageChange(pageRange.start + index)} style={pageBoxStyle}>
+            <button className={"numberBtn numberBtn"+index} key={pageRange.start + index} onClick={(e) => handlePageChange(pageRange.start + index)} style={pageBoxStyle} >
                 {pageRange.start + index}
             </button>
         ));

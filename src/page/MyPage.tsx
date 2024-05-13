@@ -326,7 +326,6 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                             </tbody>
                         </table>
                         <div>
-                            페이지네이션
                         </div>
                     </div>
                 );
