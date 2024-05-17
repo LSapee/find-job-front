@@ -31,7 +31,6 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         postT:"",
         subS:"",
     });
-    const jobsPerPage = 25;
 
     // 버튼 클릭 시 실행되는 함수
     useEffect( () => {
@@ -207,10 +206,33 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         link.click();
         document.body.removeChild(link);
     }
-    const noting =() =>{
+    const makeSelecter =() =>{
         alert("아직 준비중입니다.")
     }
+    const deleteAll = async () =>{
+        await fetch(`https://findjobapi.lsapee.com/api/companys/all `,
+            // await fetch(`http://localhost:3001/api/companys `,
+            {method: 'DELETE',
+                headers: {'Content-Type': 'application/json'},
+                credentials: 'include',
+            }
+        ).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // JSON 형태로 응답 받기
+        })
+            .then(data => {
+                // 서버로부터 받은 데이터 처리
+                alert(data.success)
+            })
+            .catch(error => {
+                // 오류 처리
+                alert("처리 실패")
+                console.error('There was a problem with your fetch operation:', error);
+            });
 
+    }
 
 // 선택된 버튼에 따라 해당 내용을 반환하는 함수
     const getContent = () => {
@@ -309,8 +331,10 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                     <td>{job.siteName}</td>
                                     <td>{job.date.substring(0, 10)}</td>
                                     <td>
-                                        {job.status} &ensp;
-                                        <button className="btn btn-secondary" onClick={(e)=>{noting()}}>
+                                        <span id={`status${index + 1}`}>{job.status} &ensp;</span>
+                                        <button className="btn btn-secondary" onClick={(e)=>{
+                                            makeSelecter()
+                                        }}>
                                             변경하기
                                         </button>
                                     </td>
@@ -332,7 +356,24 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             case "button2":
                 return (
                     <div>
-                        <h2 style={{textAlign: "center", marginTop: "50px", marginBottom: "50px"}}>제외한 회사 목록</h2>
+                        <div className="row">
+                            <div className="col"></div>
+                            <div className="col">
+                                <h2 style={{textAlign: "center", marginTop: "50px", marginBottom: "50px"}}>제외한 회사 목록</h2>
+                            </div>
+                        </div>
+                        <div className="col">
+                            <button className="btn btn-danger" style={{
+                                textAlign: "center",
+                                marginTop: "50px",
+                                marginBottom: "50px",
+                                float: "right"
+                            }}
+                                    onClick={event => deleteAll()}
+                            >제외 목록 전부 삭제
+                            </button>
+                        </div>
+
                         <table className="table">
                             <thead>
                             <tr>
@@ -363,7 +404,6 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 return null;
         }
     };
-
     useEffect(() => {
         // 쿠키에 "a" 정보가 없으면 리다이렉션
         if (!isLoggedIn) {
