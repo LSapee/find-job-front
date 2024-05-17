@@ -210,6 +210,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         alert("아직 준비중입니다.")
     }
     const deleteAll = async () =>{
+        let tt = false;
         await fetch(`https://findjobapi.lsapee.com/api/companys/all `,
             // await fetch(`http://localhost:3001/api/companys `,
             {method: 'DELETE',
@@ -223,6 +224,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             return response.json(); // JSON 형태로 응답 받기
         })
             .then(data => {
+                tt= true;
                 // 서버로부터 받은 데이터 처리
                 alert(data.success)
             })
@@ -231,7 +233,9 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 alert("처리 실패")
                 console.error('There was a problem with your fetch operation:', error);
             });
-
+        if(tt){
+            setIgnoredJobs([]);
+        }
     }
 
 // 선택된 버튼에 따라 해당 내용을 반환하는 함수
