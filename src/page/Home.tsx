@@ -174,6 +174,9 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
             btnElement.style.color="black";
             btnElement.style.fontSize="16px";
         }
+        while(page>10){
+            page-=10;
+        }
         const thisPageBtn = document.getElementsByClassName(`numberBtn${page-1}`);
         const thisBtn = thisPageBtn[0] as HTMLElement;
         thisBtn.style.fontWeight="bolder";
