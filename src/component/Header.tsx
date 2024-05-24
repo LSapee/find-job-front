@@ -6,9 +6,16 @@ const Header: React.FC<UserProps> = ({ isLoggedIn }) => {
     return (
         <header style={headerStyle}>
             <div style={contentStyle}>
-                <div style={titleStyle}></div>
                 <div style={titleContainerStyle}>
-                    <h1 style={titleTextStyle} >사람인/잡코리아 링크 가져오기</h1>
+                    <h1 style={titleTextStyle}>
+                        <a href="/" style={{textDecoration:"none"}}>
+                            <img src="./favicon.ico"/>
+                            FindJob
+                        </a>
+                    </h1>
+                </div>
+                <div style={titleStyle}>
+
                 </div>
                 <div style={navContainerStyle}>
                     <Nav isLoggedIn={isLoggedIn} />
@@ -33,6 +40,7 @@ const contentStyle = {
 
 const titleStyle = {
     fontSize: '24px',
+
 };
 
 const titleContainerStyle = {
@@ -43,6 +51,7 @@ const titleContainerStyle = {
 const titleTextStyle = {
     fontSize: '40px',
     fontWeight: 'bold',
+    color : '#0088FF'
 };
 
 const navContainerStyle = {
