@@ -113,7 +113,6 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             })
             .catch(error => console.error('Error fetching:', error));
     }
-
     const companyDelCen = async (companyName:string) =>{
         const delData = {
             companyName: companyName
@@ -559,13 +558,21 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             {/* 버튼 1 */}
             <div className="row">
                 <div className="col">
-                    <button className="btn btn-light" id="button1" style={btnStyle} onClick={() => handleButtonClick("button1")}>
+                    <button className="btn btn-light" id="button1" style={btnStyle}
+                            onClick={() => handleButtonClick("button1")}>
                         내가 지원한 기업목록 보기
                     </button>
                 </div>
                 <div className="col">
-                    <button className="btn btn-light" id="button2" style={btnStyle} onClick={() => handleButtonClick("button2")}>
+                    <button className="btn btn-light" id="button2" style={btnStyle}
+                            onClick={() => handleButtonClick("button2")}>
                         보지 않기로한 기업 목록 보기
+                    </button>
+                </div>
+                <div className="col">
+                    <button className="btn btn-light" id="button3" style={btnStyle}
+                            onClick={() => handleButtonClick("button3")}>
+                        불합격한 기업 목록 보기
                     </button>
                 </div>
             </div>
