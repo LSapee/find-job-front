@@ -216,7 +216,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         const takeDiv:HTMLElement = document.getElementById(`status${transNum+1}`) as HTMLElement;
         const statusText = takeDiv.innerText;
         if(appliedCompaniesTrans[transNum]){
-            const selectElement = document.getElementById("statusSelect") as HTMLSelectElement;
+            const selectElement = document.getElementById(`statusSelect${transNum}`) as HTMLSelectElement;
             const data = {
                 status:selectElement.value,
                 companyName:appliedCompanies[transNum].companyName
@@ -244,7 +244,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 .catch(error => console.error('Error fetching:', error));
         } else {
             takeDiv.innerHTML = `
-            <select className="form-select" id="statusSelect">
+            <select className="form-select" id="statusSelect${transNum}">
                 <option value="지원완료">지원완료</option>
                 <option value="서류열람">서류열람</option>
                 <option value="서류통과">서류통과</option>
@@ -255,7 +255,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             </select>
             `;
             // select element를 선택한 후, statusText에 따라 option을 선택합니다.
-            const selectElement = document.getElementById("statusSelect") as HTMLSelectElement;
+            const selectElement = document.getElementById(`statusSelect${transNum}`) as HTMLSelectElement;
             selectElement.value = statusText;
             appliedCompaniesTrans[transNum] = true;
         }
