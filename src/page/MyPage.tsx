@@ -31,7 +31,8 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         postT:"",
         subS:"",
     });
-
+    // 변경하기 저장할 배열
+    const [appliedCompaniesTrans,setAppliedCompaniesTrans] = useState<boolean[]>([]);
     // 버튼 클릭 시 실행되는 함수
     useEffect( () => {
         // 다시는 보지 않을 공고 정보
@@ -42,6 +43,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
     const handleButtonClick = (button:string) => {
         setSelectedButton(button); // 클릭한 버튼을 상태에 저장
     };
+    // 제외한 회사 목록 가져오기
     const getIgnoreCompanies = async ()=>{
         await fetch('https://findjobapi.lsapee.com/api/companys',{
             method: 'GET',
@@ -62,6 +64,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                 console.error(error)
             });
     }
+    // 지원한 회사 목록 가져오기
     const getCompletedCompanyList =async ()=>{
         await fetch('https://findjobapi.lsapee.com/api/companyT',{
             method: 'GET',
@@ -77,6 +80,9 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             })
             .then(data => {
                 setAppliedCompanies(data)
+                const temp = new Array(data.length).fill(false);
+                // 변경하기 적용 관련 생성
+                setAppliedCompaniesTrans(temp);
             })
             .catch(error => console.error('Error fetching:', error));
     }
@@ -206,8 +212,54 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         link.click();
         document.body.removeChild(link);
     }
-    const makeSelecter =() =>{
-        alert("아직 준비중입니다.")
+    const makeSelecter =(transNum:number) =>{
+        const takeDiv:HTMLElement = document.getElementById(`status${transNum+1}`) as HTMLElement;
+        const statusText = takeDiv.innerText;
+        if(appliedCompaniesTrans[transNum]){
+            const selectElement = document.getElementById("statusSelect") as HTMLSelectElement;
+            const data = {
+                status:selectElement.value,
+                companyName:appliedCompanies[transNum].companyName
+            }
+            fetch("https://findjobapi.lsapee.com/api/companyT",{
+                method: 'PATCH',
+                headers: {'Content-Type': 'application/json'},
+                credentials: 'include',
+                body: JSON.stringify(data),
+            }).then(response => {
+                if (response.type === 'opaqueredirect') {
+                    return window.location.href = 'https://findjob.lsapee.com';
+                }
+                return response.json()
+            })
+                .then(data => {
+                    console.log(data.status)
+                    if(data.status!=="실패") takeDiv.innerHTML = `<span>${data.status}</span>`;
+                    else {
+                        alert("변경에 실패하였습니다. 잠시 후에 다시 시도해주세요.")
+                        takeDiv.innerHTML = `<span>${appliedCompanies[transNum].status}</span>`;
+                    }
+                    appliedCompaniesTrans[transNum]=false;
+                })
+                .catch(error => console.error('Error fetching:', error));
+        } else {
+            takeDiv.innerHTML = `
+            <select className="form-select" id="statusSelect">
+                <option value="지원완료">지원완료</option>
+                <option value="서류열람">서류열람</option>
+                <option value="서류통과">서류통과</option>
+                <option value="1차합격">1차합격</option>
+                <option value="2차합격">2차합격</option>
+                <option value="최종합격">최종합격</option>
+                <option value="불합격">불합격</option>
+            </select>
+            `;
+            // select element를 선택한 후, statusText에 따라 option을 선택합니다.
+            const selectElement = document.getElementById("statusSelect") as HTMLSelectElement;
+            selectElement.value = statusText;
+            appliedCompaniesTrans[transNum] = true;
+        }
+        console.log(appliedCompaniesTrans[transNum]);
     }
     const deleteAll = async () =>{
         let tt = false;
@@ -335,9 +387,11 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                     <td>{job.siteName}</td>
                                     <td>{job.date.substring(0, 10)}</td>
                                     <td>
-                                        <span id={`status${index + 1}`}>{job.status} &ensp;</span>
+                                        <div id={`status${index + 1}`} style={{textAlign:"center"}}>
+                                            <span>{job.status}</span>
+                                        </div>
                                         <button className="btn btn-secondary" onClick={(e)=>{
-                                            makeSelecter()
+                                            makeSelecter(index)
                                         }}>
                                             변경하기
                                         </button>
