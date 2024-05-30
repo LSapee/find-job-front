@@ -530,7 +530,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                     <td>{failCompany.companyName}</td>
                                     <td>{failCompany.postT}</td>
                                     <td>{failCompany.site}</td>
-                                    <td>{failCompany.Date.substring(0,10)}</td>
+                                    <td>{failCompany.Date}</td>
                                     <td>
                                         <button className="btn btn-danger" onClick={(e)=>{failCompanyDelCen(failCompany.companyName) }}>
                                             삭제
