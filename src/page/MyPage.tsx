@@ -406,7 +406,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                 <th scope="col">지원 회사명</th>
                                 <th scope="col">지원 공고명</th>
                                 <th scope="col">지원 사이트</th>
-                                <th scope='col'>지원 날짜/변경 일자</th>
+                                <th scope='col'>지원 날짜/변경 날짜</th>
                                 <th scope='col' style={{textAlign:"center"}}>진행상황</th>
                                 <th scope='col'>삭제</th>
                             </tr>
@@ -520,7 +520,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                 <th scope="col">지원 회사명</th>
                                 <th scope="col">지원 공고명</th>
                                 <th scope="col">지원 사이트</th>
-                                <th scope="col">자원 날짜/변경 일자</th>
+                                <th scope="col">자원 날짜/변경 날짜</th>
                                 <th scope="col">삭제 버튼</th>
                             </tr>
                             </thead>
@@ -533,7 +533,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                     <td>{failCompany.site}</td>
                                     <td>{failCompany.Date.substring(0,10)}</td>
                                     <td>
-                                        <button className="btn btn-danger" onClick={(e)=>{failCompanyDelCen(failCompany.companyName) }}>
+                                        <button className="btn btn-danger" onClick={(e)=>{failCompanyDelCen(failCompany.companyName)}}>
                                             삭제
                                         </button>
                                     </td>
