@@ -18,7 +18,12 @@ interface inputDataType {
     postT:string
     subS:string
 }
-
+interface failCompanyType{
+    companyName:string,
+    postT:string,
+    site:string,
+    Date:string,
+}
 const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
     const [selectedButton, setSelectedButton] = useState("button1");
     // 지원한 회사 정보를 저장할 배열
@@ -33,11 +38,14 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
     });
     // 변경하기 저장할 배열
     const [appliedCompaniesTrans,setAppliedCompaniesTrans] = useState<boolean[]>([]);
+    // 불합격한 회사 목록
+    const[failCompanies,setFailCompanies] = useState<failCompanyType[]>([]);
     // 버튼 클릭 시 실행되는 함수
     useEffect( () => {
         // 다시는 보지 않을 공고 정보
         getIgnoreCompanies();
         getCompletedCompanyList();
+        getfailedCompanyList();
     }, []);
 
     const handleButtonClick = (button:string) => {
@@ -86,6 +94,26 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             })
             .catch(error => console.error('Error fetching:', error));
     }
+    //불합격한 회사 목록 가져오기
+    const getfailedCompanyList = async ()=>{
+        await fetch('https://findjobapi.lsapee.com/api/companyT/failed',{
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
+            redirect: 'manual'
+        })
+            .then(response => {
+                if (response.type === 'opaqueredirect') {
+                    return window.location.href = 'https://findjob.lsapee.com';
+                }
+                return response.json()
+            })
+            .then(data => {
+                setFailCompanies(data)
+            })
+            .catch(error => console.error('Error fetching:', error));
+    }
+
     const companyDelCen = async (companyName:string) =>{
         const delData = {
             companyName: companyName
@@ -289,6 +317,12 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
             setIgnoredJobs([]);
         }
     }
+    const deleteAllfailed = async ()=>{
+        alert("준비중입니다.")
+    }
+    const failCompanyDelCen = async (companyName:string)=>{
+        alert("준비중입니다");
+    }
 
 // 선택된 버튼에 따라 해당 내용을 반환하는 함수
     const getContent = () => {
@@ -450,6 +484,57 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                     <td>
                                         <button className="btn btn-danger" onClick={(e)=>{companyDelCen(jobs.companyName) }}>
                                             제외 취소
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                );
+            case "button3":
+                return (
+                    <div>
+                        <div className="row">
+                            <div className="col"></div>
+                            <div className="col">
+                                <h2 style={{textAlign: "center", marginTop: "50px", marginBottom: "50px"}}>불합격 회사 목록</h2>
+                            </div>
+                        </div>
+                        <div className="col">
+                            <button className="btn btn-danger" style={{
+                                textAlign: "center",
+                                marginTop: "50px",
+                                marginBottom: "50px",
+                                float: "right"
+                            }}
+                                    onClick={event => deleteAllfailed()}
+                            >불합격 전부 삭제
+                            </button>
+                        </div>
+
+                        <table className="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">회사명</th>
+                                <th scope="col">공고명</th>
+                                <th scope="col">지원한 사이트</th>
+                                <th scope="col">자원한 날짜</th>
+                                <th scope="col">삭제 버튼</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {failCompanies.map((failCompany, index) => (
+                                <tr key={failCompany.companyName}>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>{failCompany.companyName}</td>
+                                    <td>{failCompany.postT}</td>
+                                    <td>{failCompany.site}</td>
+                                    <td>{failCompany.Date.substring(0,10)}</td>
+                                    <td>
+                                        <button className="btn btn-danger" onClick={(e)=>{failCompanyDelCen(failCompany.companyName) }}>
+                                            삭제
                                         </button>
                                     </td>
                                 </tr>
