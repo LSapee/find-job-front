@@ -251,7 +251,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                                 <div className="col-6"></div>
                                 <div className="col-6">
                                     <button onClick={() => getJobs(0)} className="btn btn-info" style={{width: '100%'}}>
-                                        데이터 가져오기
+                                        검색하기
                                     </button>
                                 </div>
                             </div>
@@ -280,7 +280,7 @@ const Home:React.FC<UserProps>= (isLoggedIn) => {
                                                 <span>마감일 :{job.endDate}</span>
                                             </p>
                                             <a href={job.postURL} className="btn btn-info" target="_blank"
-                                               rel="noopener noreferrer">페이지로 이동</a>
+                                               rel="noopener noreferrer">채용사이트로 이동</a>
                                             &nbsp;
                                             {/* 지원 완료 버튼 클릭시 마이페이지에서 지원 완료한 목록*/}
                                             {isLoggedIn.isLoggedIn ?

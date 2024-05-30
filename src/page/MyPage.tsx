@@ -405,8 +405,8 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                 <th scope="col">#</th>
                                 <th scope="col">지원 회사명</th>
                                 <th scope="col">지원 공고명</th>
-                                <th scope="col">지원한 사이트</th>
-                                <th scope='col'>지원 날짜</th>
+                                <th scope="col">지원 사이트</th>
+                                <th scope='col'>지원 날짜/변경 일자</th>
                                 <th scope='col' style={{textAlign:"center"}}>진행상황</th>
                                 <th scope='col'>삭제</th>
                             </tr>
@@ -465,8 +465,6 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                                 </button>
                             </div>
                         </div>
-
-
                         <table className="table">
                             <thead>
                             <tr>
@@ -519,10 +517,10 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">회사명</th>
-                                <th scope="col">공고명</th>
-                                <th scope="col">지원한 사이트</th>
-                                <th scope="col">자원한 날짜</th>
+                                <th scope="col">지원 회사명</th>
+                                <th scope="col">지원 공고명</th>
+                                <th scope="col">지원 사이트</th>
+                                <th scope="col">자원 날짜/변경 일자</th>
                                 <th scope="col">삭제 버튼</th>
                             </tr>
                             </thead>
