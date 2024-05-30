@@ -450,20 +450,22 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                         <div className="row">
                             <div className="col"></div>
                             <div className="col">
-                                <h2 style={{textAlign: "center", marginTop: "50px", marginBottom: "50px"}}>제외한 회사 목록</h2>
+                                <h2 style={{textAlign: "center", marginTop: "50px", marginBottom: "50px"}}>제외한 회사
+                                    목록</h2>
+                            </div>
+                            <div className="col">
+                                <button className="btn btn-danger" style={{
+                                    textAlign: "center",
+                                    marginTop: "50px",
+                                    marginBottom: "50px",
+                                    float: "right"
+                                }}
+                                        onClick={event => deleteAll()}
+                                >제외 목록 전부 삭제
+                                </button>
                             </div>
                         </div>
-                        <div className="col">
-                            <button className="btn btn-danger" style={{
-                                textAlign: "center",
-                                marginTop: "50px",
-                                marginBottom: "50px",
-                                float: "right"
-                            }}
-                                    onClick={event => deleteAll()}
-                            >제외 목록 전부 삭제
-                            </button>
-                        </div>
+
 
                         <table className="table">
                             <thead>
@@ -497,19 +499,20 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                         <div className="row">
                             <div className="col"></div>
                             <div className="col">
-                                <h2 style={{textAlign: "center", marginTop: "50px", marginBottom: "50px"}}>불합격 회사 목록</h2>
+                                <h2 style={{textAlign: "center", marginTop: "50px", marginBottom: "50px"}}>불합격 회사
+                                    목록</h2>
                             </div>
-                        </div>
-                        <div className="col">
-                            <button className="btn btn-danger" style={{
-                                textAlign: "center",
-                                marginTop: "50px",
-                                marginBottom: "50px",
-                                float: "right"
-                            }}
-                                    onClick={event => deleteAllfailed()}
-                            >불합격 전부 삭제
-                            </button>
+                            <div className="col">
+                                <button className="btn btn-danger" style={{
+                                    textAlign: "center",
+                                    marginTop: "50px",
+                                    marginBottom: "50px",
+                                    float: "right"
+                                }}
+                                        onClick={event => deleteAllfailed()}
+                                >불합격 전부 삭제
+                                </button>
+                            </div>
                         </div>
 
                         <table className="table">
