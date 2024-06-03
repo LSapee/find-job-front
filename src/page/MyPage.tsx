@@ -45,7 +45,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
         // 다시는 보지 않을 공고 정보
         getIgnoreCompanies();
         getCompletedCompanyList();
-        getfailedCompanyList();
+
     }, []);
 
     const handleButtonClick = (button:string) => {
@@ -492,6 +492,7 @@ const MyPage:React.FC<UserProps> =({isLoggedIn}) => {
                     </div>
                 );
             case "button3":
+                getfailedCompanyList();
                 return (
                     <div>
                         <div className="row">
